@@ -71,20 +71,34 @@ export function ChatInput({ onSend, onAbort, isGenerating }: ChatInputProps) {
           </div>
 
           <div className="flex items-center gap-2">
-            {isGenerating && (
-              <Button variant="ghost" size="icon" className="size-8" onClick={onAbort}>
-                <SquareIcon className="size-4" />
+            {isGenerating ? (
+              <Button
+                size="icon"
+                className={buttonVariants({
+                  variant: "ghost",
+                  className: "size-8 cursor-pointer animate-pulse",
+                })}
+                onClick={onAbort}
+              >
+                <SquareIcon className="text-current" />
+                <span className="sr-only">Stop generating</span>
+              </Button>
+            ) : (
+              <Button
+                size="icon"
+                className={buttonVariants({
+                  variant: "ghost",
+                  size: "icon",
+                  className:
+                    "size-8 cursor-pointer disabled:bg-gray-200 disabled:ring disabled:ring-gray-300 disabled:text-gray-400 transition-all",
+                })}
+                disabled={!input.trim()}
+                onClick={handleSend}
+              >
+                <ArrowUpIcon className="text-current" />
+                <span className="sr-only">Send message</span>
               </Button>
             )}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-8"
-              onClick={handleSend}
-              disabled={!input.trim()}
-            >
-              <ArrowUpIcon className="size-4" />
-            </Button>
           </div>
         </div>
       </div>

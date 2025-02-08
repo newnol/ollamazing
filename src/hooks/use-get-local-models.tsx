@@ -1,8 +1,6 @@
-import { useGetSelectedModel } from "./use-get-selected-model";
 import { localModels, selectedModel } from "@/lib/storage";
 import { useQuery } from "@tanstack/react-query";
 import ollama from "ollama";
-import { useEffect } from "react";
 
 export function useGetLocalModels(needUpdate = false) {
   const query = useQuery({
@@ -12,22 +10,17 @@ export function useGetLocalModels(needUpdate = false) {
       if (needUpdate) {
         const res = await ollama.list();
         models = res.models;
+
+        await localModels.setValue(models);
+      }
+
+      if (!(await selectedModel.getValue())) {
+        await selectedModel.setValue(models[0]?.name);
       }
 
       return models;
     },
   });
-
-  const getSelectedModelQuery = useGetSelectedModel();
-
-  useEffect(() => {
-    if (query.isSuccess && query.data) {
-      localModels.setValue(query.data);
-      if (!getSelectedModelQuery.data) {
-        selectedModel.setValue(query.data[0]?.name);
-      }
-    }
-  }, [query.isSuccess, query.data, getSelectedModelQuery.data]);
 
   return query;
 }
