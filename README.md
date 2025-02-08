@@ -123,7 +123,7 @@ then, a new browser window will open with the extension installed.
 ## Roadmap
 
 - [x] Basic, chat with AI assistant.
-- [-] Improve UI, UX.
+- [ ] Improve UI, UX.
   - [ ] Adapt for almost popular models's message format.
   - [ ] Interact with images.
 - [ ] More settings like theme, language.
