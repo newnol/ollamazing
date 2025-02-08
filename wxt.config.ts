@@ -9,6 +9,11 @@ export default defineConfig({
   vite: () => ({
     plugins: [react(), tailwindcss()],
   }),
+  imports: {
+    eslintrc: {
+      enabled: 9,
+    },
+  },
   manifest: {
     permissions: ["storage"],
   },
