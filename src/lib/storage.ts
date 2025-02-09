@@ -1,3 +1,4 @@
+import { Message } from "@/shared/types";
 import { ModelResponse } from "ollama";
 
 export const theme = storage.defineItem<"light" | "dark" | "system">("local:theme", {
@@ -13,3 +14,7 @@ export const localModels = storage.defineItem<ModelResponse[]>("local:localModel
 });
 
 export const selectedModel = storage.defineItem<string>("local:selectedModel");
+
+export const chatHistory = storage.defineItem<Message[]>("local:chatHistory", {
+  fallback: [],
+});

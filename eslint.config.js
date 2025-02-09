@@ -30,4 +30,9 @@ export default [
   },
   pluginPrettier,
   ...pluginQuery.configs["flat/recommended"],
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
 ];

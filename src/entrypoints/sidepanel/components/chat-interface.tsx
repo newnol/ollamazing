@@ -3,17 +3,12 @@ import { ChatInput } from "./chat-input";
 import { UserMessage } from "./user-message";
 import { AssistantAvatar } from "@/components/assistant-avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useGetChatHistory } from "@/hooks/use-get-chat-history";
+import { chatHistory } from "@/lib/storage";
+import { Message } from "@/shared/types";
 import { useMutation } from "@tanstack/react-query";
 import ollama from "ollama";
-import { useCallback, useRef, useState } from "react";
-
-export interface Message {
-  role: "system" | "user" | "assistant";
-  content: string;
-  timestamp: Date;
-  model?: string | null;
-  aborted?: boolean;
-}
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function ChatInterface() {
   const { data: selectedModel } = useGetSelectedModel();
@@ -22,11 +17,16 @@ export function ChatInterface() {
   const [curResponseMessage, setCurResponseMessage] = useState<string[]>([]);
   const [chatResponse, setChatResponse] = useState<{ abort: () => void }>();
 
+  useGetChatHistory((data) => setMessages(data));
+
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    if (scrollAreaRef.current && scrollAreaRef.current.children[1]) {
+      scrollAreaRef.current.children[1].scrollTo({
+        top: scrollAreaRef.current.children[1].scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, []);
 
@@ -97,16 +97,22 @@ export function ChatInterface() {
     chatResponse?.abort();
   }, [chatResponse]);
 
+  useEffect(() => {
+    if (messages.length > 0) {
+      chatHistory.setValue(messages);
+    }
+  }, [messages]);
+
   return (
-    <div className="relative size-full flex flex-col overflow-hidden">
+    <div className="relative size-full flex flex-col overflow-y-hidden">
       {messages.length === 0 ? (
         <div className="mt-4 flex flex-col items-center justify-center h-full">
           <AssistantAvatar model={selectedModel} className="size-24" />
           <p className="text-xl font-semibold mb-4 font-mono">{selectedModel}</p>
         </div>
       ) : (
-        <div className="flex-grow overflow-hidden">
-          <ScrollArea ref={scrollAreaRef} className="h-full">
+        <div className="flex-grow overflow-y-hidden">
+          <ScrollArea ref={scrollAreaRef} className="size-full flex">
             {messages.map((message, index) =>
               message.role === "assistant" ? (
                 <AssistantMessage key={index.toString()} message={message} className="p-3" />
