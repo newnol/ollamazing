@@ -20,14 +20,14 @@ interface AssistantMessageProps {
 
 const MarkdownContent = ({ content }: { content: string }) => (
   <ReactMarkdown
-    className="text-sm px-1"
+    className="text-sm"
     remarkPlugins={[remarkGfm, remarkMath]}
     rehypePlugins={[rehypeKatex]}
     components={{
       code({ className, children, ...rest }) {
         const match = /language-(\w+)/.exec(className || "");
         return match ? (
-          <div className="rounded-xl bg-zinc-600">
+          <div className="rounded-xl bg-zinc-600 overflow-hidden">
             <div className="flex justify-between items-center pl-2 pr-1 py-1">
               <div className="text-white text-xs font-mono">{match[1]}</div>
               <Button
@@ -106,16 +106,14 @@ export function AssistantMessage({ message, className }: AssistantMessageProps) 
     <div className={cn("flex flex-col gap-2", className)}>
       <div className="flex items-center gap-2">
         <AssistantAvatar
-          className="size-6 rounded-lg border border-gray-300"
+          className="size-8 p-0.5 rounded-xl border border-gray-300"
           model={message.model}
         />
         <div className="font-mono text-xs font-bold">{message.model}</div>
       </div>
       <div className="flex flex-col gap-1">
         {renderContent(message)}
-        <span className="text-xs text-muted-foreground px-2">
-          {dayjs(message.timestamp).fromNow()}
-        </span>
+        <div className="text-xs text-muted-foreground">{dayjs(message.timestamp).fromNow()}</div>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import { useGetChatHistory } from "@/hooks/use-get-chat-history";
 import { chatHistory } from "@/lib/storage";
 import { Message } from "@/shared/types";
 import { useMutation } from "@tanstack/react-query";
-import ollama from "ollama";
+import ollama from "ollama/browser";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export function ChatInterface() {

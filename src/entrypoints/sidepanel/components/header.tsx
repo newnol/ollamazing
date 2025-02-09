@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -11,10 +12,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useGetLocalModels } from "@/hooks/use-get-local-models";
 import { useGetSelectedModel } from "@/hooks/use-get-selected-model";
-import { selectedModel } from "@/lib/storage";
+import { chatHistory, selectedModel } from "@/lib/storage";
 import { EXTENSION_NAME } from "@/shared/consts";
 import { useMutation } from "@tanstack/react-query";
-import { EllipsisVerticalIcon } from "lucide-react";
+import { DeleteIcon, EllipsisVerticalIcon } from "lucide-react";
 
 export const Header = () => {
   const getLocalModelsQuery = useGetLocalModels();
@@ -28,6 +29,13 @@ export const Header = () => {
     onSuccess: () => {
       selectedModelQuery.refetch();
     },
+  });
+
+  const deleteChatHistoryMutation = useMutation({
+    mutationFn: async () => {
+      await chatHistory.setValue([]);
+    },
+    onSuccess: () => {},
   });
 
   return (
@@ -47,6 +55,14 @@ export const Header = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
+          <DropdownMenuItem
+            className="text-destructive"
+            onSelect={() => deleteChatHistoryMutation.mutate()}
+          >
+            <DeleteIcon />
+            Delete history
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuLabel>Select model</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup value={selectedModelQuery.data ?? ""}>

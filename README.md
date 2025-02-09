@@ -13,7 +13,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/buiducnhat/ollamazing">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="docs/logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Ollamazing</h3>
@@ -61,7 +61,7 @@
 
 ## About The Project
 
-![Ollamazing Screen Shot][product-screenshot]
+![Ollamazing Demo][product-demo]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -189,7 +189,7 @@ Project Link: [https://github.com/buiducnhat/ollamazing](https://github.com/buid
 [license-url]: https://github.com/buiducnhat/ollamazing/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/buiducnhat
-[product-screenshot]: images/screenshot.png
+[product-demo]: docs/demo.gif
 [WXT]: https://img.shields.io/badge/wxt-black?style=for-the-badge&logo=wxt
 [WXT-url]: https://wxt.dev/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB

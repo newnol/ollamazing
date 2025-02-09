@@ -1,6 +1,6 @@
 import { localModels, selectedModel } from "@/lib/storage";
 import { useQuery } from "@tanstack/react-query";
-import ollama from "ollama";
+import ollama from "ollama/browser";
 
 export function useGetLocalModels(needUpdate = false) {
   const query = useQuery({
