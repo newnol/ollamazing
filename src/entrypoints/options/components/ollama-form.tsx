@@ -13,6 +13,7 @@ import { DEFAULT_OLLAMA_HOST } from "@/shared/consts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
 const formSchema = z.object({
@@ -22,14 +23,23 @@ const formSchema = z.object({
 export function OllamaForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      ollamaHost: DEFAULT_OLLAMA_HOST,
+    defaultValues: async () => {
+      const storedHost = await ollamaHost.getValue();
+      return {
+        ollamaHost: storedHost,
+      };
     },
   });
 
   const { mutateAsync } = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
       await ollamaHost.setValue(values.ollamaHost);
+    },
+    onSuccess: () => {
+      toast.success("Updated Ollama host");
+    },
+    onError: () => {
+      toast.error("Failed to update Ollama host");
     },
   });
 

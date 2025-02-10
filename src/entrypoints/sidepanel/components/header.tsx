@@ -38,7 +38,10 @@ export const Header = ({ models }: HeaderProps) => {
     mutationFn: async () => {
       await chatHistory.setValue([]);
     },
-    onSuccess: () => {},
+    onSuccess: () => {
+      // Reload sidepanel
+      window.location.reload();
+    },
   });
 
   return (

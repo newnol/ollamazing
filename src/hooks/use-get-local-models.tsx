@@ -10,7 +10,11 @@ export function useGetLocalModels({ enabled }: { enabled: boolean }) {
       const response = await ollama.list();
 
       await localModels.setValue(response.models);
-      await selectedModel.setValue(response.models[0]?.name);
+
+      const selectedModelName = await selectedModel.getValue();
+      if (!selectedModelName) {
+        await selectedModel.setValue(response.models[0]?.name);
+      }
 
       return response.models;
     },
