@@ -1,3 +1,4 @@
+import { DEFAULT_OLLAMA_HOST } from "@/shared/consts";
 import { Message } from "@/shared/types";
 import { ModelResponse } from "ollama";
 
@@ -17,4 +18,8 @@ export const selectedModel = storage.defineItem<string>("local:selectedModel");
 
 export const chatHistory = storage.defineItem<Message[]>("local:chatHistory", {
   fallback: [],
+});
+
+export const ollamaHost = storage.defineItem<string>("local:ollamaHost", {
+  fallback: DEFAULT_OLLAMA_HOST,
 });

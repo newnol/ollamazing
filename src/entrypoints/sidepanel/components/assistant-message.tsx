@@ -27,16 +27,16 @@ const MarkdownContent = ({ content }: { content: string }) => (
       code({ className, children, ...rest }) {
         const match = /language-(\w+)/.exec(className || "");
         return match ? (
-          <div className="rounded-xl bg-zinc-600 overflow-hidden">
-            <div className="flex justify-between items-center pl-2 pr-1 py-1">
-              <div className="text-white text-xs font-mono">{match[1]}</div>
+          <div className="overflow-hidden rounded-xl bg-zinc-600">
+            <div className="flex items-center justify-between py-1 pr-1 pl-2">
+              <div className="font-mono text-xs text-white">{match[1]}</div>
               <Button
                 size="icon"
                 variant="ghost"
                 className={buttonVariants({
                   variant: "ghost",
                   className:
-                    "cursor-pointer size-8 text-white hover:bg-zinc-500 hover:text-white transition-all",
+                    "size-8 cursor-pointer text-white transition-all hover:bg-zinc-500 hover:text-white",
                 })}
                 onClick={async () => {
                   await navigator.clipboard.writeText(String(children).replace(/\n$/, ""));
@@ -62,14 +62,14 @@ const MarkdownContent = ({ content }: { content: string }) => (
         ) : (
           <code
             {...rest}
-            className={cn("bg-muted px-1 py-0.5 rounded text-sm overflow-x-auto", className)}
+            className={cn("bg-muted overflow-x-auto rounded px-1 py-0.5 text-sm", className)}
           >
             {children}
           </code>
         );
       },
       p({ children }) {
-        return <p className="whitespace-pre-wrap mb-4 last:mb-0">{children}</p>;
+        return <p className="mb-4 whitespace-pre-wrap last:mb-0">{children}</p>;
       },
     }}
   >
@@ -86,8 +86,8 @@ const renderContent = (message: Message) => {
     return (
       <>
         {thinkContent && (
-          <div className="mb-2 rounded-xl rounded-tl-sm bg-muted p-2">
-            <p className="text-xs text-muted-foreground font-medium mb-1">
+          <div className="bg-muted mb-2 rounded-xl p-2">
+            <p className="text-muted-foreground mb-1 text-xs font-medium">
               {mainContent ? "Think result" : "Thinking..."}
             </p>
             <MarkdownContent content={thinkContent} />
@@ -106,14 +106,14 @@ export function AssistantMessage({ message, className }: AssistantMessageProps) 
     <div className={cn("flex flex-col gap-2", className)}>
       <div className="flex items-center gap-2">
         <AssistantAvatar
-          className="size-8 p-0.5 rounded-xl border border-gray-300"
+          className="size-8 rounded-xl border border-gray-300 p-0.5"
           model={message.model}
         />
         <div className="font-mono text-xs font-bold">{message.model}</div>
       </div>
       <div className="flex flex-col gap-1">
         {renderContent(message)}
-        <div className="text-xs text-muted-foreground">{dayjs(message.timestamp).fromNow()}</div>
+        <div className="text-muted-foreground text-xs">{dayjs(message.timestamp).fromNow()}</div>
       </div>
     </div>
   );

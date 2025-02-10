@@ -1,5 +1,5 @@
 /** @type {import('prettier').Config} */
 export default {
   printWidth: 100,
-  plugins: ["prettier-plugin-tailwindcss", "@trivago/prettier-plugin-sort-imports"],
+  plugins: ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
 };

@@ -4,10 +4,10 @@ import { UserMessage } from "./user-message";
 import { AssistantAvatar } from "@/components/assistant-avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGetChatHistory } from "@/hooks/use-get-chat-history";
+import { getOllamaClient } from "@/lib/ollama-client";
 import { chatHistory } from "@/lib/storage";
 import { Message } from "@/shared/types";
 import { useMutation } from "@tanstack/react-query";
-import ollama from "ollama/browser";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export function ChatInterface() {
@@ -31,16 +31,26 @@ export function ChatInterface() {
   }, []);
 
   const { mutate: mutateSendMessage, isPending: isSendingMessage } = useMutation({
-    mutationFn: async ({ messageContent, model }: { messageContent: string; model: string }) => {
+    mutationFn: async ({
+      messageContent,
+      model,
+      images,
+    }: {
+      messageContent: string;
+      model: string;
+      images?: string[];
+    }) => {
       const userMessage: Message = {
         role: "user",
         content: messageContent,
         timestamp: new Date(),
         model: selectedModel,
+        images,
       };
       const newMessages = [...messages, userMessage];
       setMessages(newMessages);
 
+      const ollama = await getOllamaClient();
       const response = await ollama.chat({
         model,
         messages: newMessages
@@ -48,6 +58,7 @@ export function ChatInterface() {
           .map((msg) => ({
             role: msg.role,
             content: msg.content,
+            images: msg.images,
           })),
         stream: true,
       });
@@ -64,6 +75,7 @@ export function ChatInterface() {
         content: curResponseMessage.join(""),
         timestamp: new Date(),
         model: variables.model,
+        images: variables.images,
       };
       setMessages((prev) => [...prev, mergedMessage]);
       setCurResponseMessage([]);
@@ -77,6 +89,7 @@ export function ChatInterface() {
           timestamp: new Date(),
           model: variables.model,
           aborted: true,
+          images: variables.images,
         };
         setMessages((prev) => [...prev, mergedMessage]);
         setCurResponseMessage([]);
@@ -86,9 +99,9 @@ export function ChatInterface() {
   });
 
   const handleSend = useCallback(
-    (messageContent: string) => {
+    (messageContent: string, images?: string[]) => {
       if (!selectedModel || !messageContent.trim()) return;
-      mutateSendMessage({ messageContent, model: selectedModel });
+      mutateSendMessage({ messageContent, model: selectedModel, images });
     },
     [selectedModel, mutateSendMessage],
   );
@@ -104,15 +117,15 @@ export function ChatInterface() {
   }, [messages]);
 
   return (
-    <div className="relative size-full flex flex-col overflow-y-hidden">
+    <div className="relative flex size-full flex-col overflow-y-hidden">
       {messages.length === 0 ? (
-        <div className="mt-4 flex flex-col items-center justify-center h-full">
+        <div className="mt-4 flex h-full flex-col items-center justify-center">
           <AssistantAvatar model={selectedModel} className="size-24" />
-          <p className="text-xl font-semibold mb-4 font-mono">{selectedModel}</p>
+          <p className="mb-4 font-mono text-xl font-semibold">{selectedModel}</p>
         </div>
       ) : (
         <div className="flex-grow overflow-y-hidden">
-          <ScrollArea ref={scrollAreaRef} className="size-full flex">
+          <ScrollArea ref={scrollAreaRef} className="flex size-full">
             {messages.map((message, index) =>
               message.role === "assistant" ? (
                 <AssistantMessage key={index.toString()} message={message} className="p-3" />
