@@ -1,15 +1,17 @@
 import { getOllamaClient } from "@/lib/ollama-client";
-import { localModels, selectedModel } from "@/lib/storage";
+import { ollamaHost, selectedModel } from "@/lib/storage";
 import { useQuery } from "@tanstack/react-query";
 
 export function useGetLocalModels({ enabled }: { enabled: boolean }) {
+  ollamaHost.watch(() => {
+    query.refetch();
+  });
+
   const query = useQuery({
     queryKey: ["localModels"],
     queryFn: async () => {
       const ollama = await getOllamaClient();
       const response = await ollama.list();
-
-      await localModels.setValue(response.models);
 
       const selectedModelName = await selectedModel.getValue();
       if (!selectedModelName) {

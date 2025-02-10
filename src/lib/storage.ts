@@ -1,17 +1,14 @@
 import { DEFAULT_OLLAMA_HOST } from "@/shared/consts";
 import { Message } from "@/shared/types";
-import { ModelResponse } from "ollama";
 
-export const theme = storage.defineItem<"light" | "dark" | "system">("local:theme", {
-  fallback: "system",
-});
-
-export const lang = storage.defineItem<"en" | "vi">("local:lang", {
-  fallback: "en",
-});
-
-export const localModels = storage.defineItem<ModelResponse[]>("local:localModels", {
-  fallback: [],
+export const preferences = storage.defineItem<{
+  theme: "light" | "dark" | "system";
+  lang: "en" | "vi";
+}>("local:preferences", {
+  fallback: {
+    theme: "system",
+    lang: "en",
+  },
 });
 
 export const selectedModel = storage.defineItem<string>("local:selectedModel");

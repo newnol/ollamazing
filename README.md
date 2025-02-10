@@ -83,11 +83,8 @@ This extension is built using `WXT` and `React`, so ensure to install `Node.Js` 
 
 ### Prerequisites
 
-- **bun**: After installed `bun`, we already has `bun` as package manager.
-
-- **npm**: If you prefer `node`, using `npm` or other package managers like `yarn`, `pnpm`, all are good.
-
-- **ollama**: Besides, this extension uses `Ollama`, so you have to have a `Ollama` server from anywhere, installing on local for example. For more details, read [Ollama](https://github.com/buiducnhat/ollama).
+- **Package manager**: We can use any package managers like `npm`, `yarn`, `pnpm`, `bun`. This project is currently installed by `pnpm`, that the field `pnpm-lock.yaml` exists.
+- **Ollama**: This extension uses `Ollama`, so you have to have a `Ollama` server from anywhere, installing on local for example. For more details, read [Ollama](https://github.com/buiducnhat/ollama). 
 
 ### Installation
 
@@ -97,8 +94,8 @@ This extension is built using `WXT` and `React`, so ensure to install `Node.Js` 
    ```
 2. Install dependencies
    ```sh
-   bun install
-   # or npm install, yarn install, pnpm install
+   pnpm install
+   # or npm install, yarn install, bun install
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -110,8 +107,8 @@ This extension is built using `WXT` and `React`, so ensure to install `Node.Js` 
 To run local development, run the following command:
 
 ```sh
-bun run dev
-# or npm run dev, yarn dev, pnpm dev
+pnpm run dev
+# or npm run dev, yarn run dev, bun run dev
 ```
 
 then, a new browser window will open with the extension installed.
