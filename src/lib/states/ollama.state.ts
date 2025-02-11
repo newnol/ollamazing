@@ -10,21 +10,28 @@ export interface OllamaState {
   chatHistory: ChatMessage[];
 }
 
-const getFromStorage = async () => {
+const fallbackState: OllamaState = {
+  host: DEFAULT_OLLAMA_HOST,
+  selectedModel: null,
+  chatHistory: [],
+};
+
+export const ollamaState = proxy<OllamaState>(fallbackState);
+
+(async () => {
   const item = await storage.getItem<any>(storageKey);
-  return {
-    host: item?.host ?? DEFAULT_OLLAMA_HOST,
-    selectedModel: item?.selectedModel ?? null,
-    chatHistory:
+
+  if (item) {
+    ollamaState.host = item.host ?? fallbackState.host;
+    ollamaState.selectedModel = item?.selectedModel ?? fallbackState.selectedModel;
+    ollamaState.chatHistory =
       item?.chatHistory?.map((msg: any) => ({
         ...msg,
         images: msg.images?.slice(),
         timestamp: new Date(msg.timestamp),
-      })) ?? [],
-  };
-};
-
-export const ollamaState = proxy<OllamaState>(await getFromStorage());
+      })) ?? fallbackState.chatHistory;
+  }
+})();
 
 subscribe(ollamaState, async () => {
   await storage.setItem(storageKey, {

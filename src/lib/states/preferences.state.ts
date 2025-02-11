@@ -7,12 +7,20 @@ export interface PreferencesState {
   lang: "en" | "vi";
 }
 
-export const preferencesState = proxy<PreferencesState>(
-  (await storage.getItem<PreferencesState>(storageKey)) ?? {
-    theme: "system",
-    lang: "en",
-  },
-);
+const fallbackState: PreferencesState = {
+  theme: "system",
+  lang: "en",
+};
+
+export const preferencesState = proxy<PreferencesState>(fallbackState);
+
+(async () => {
+  const item = await storage.getItem<PreferencesState>(storageKey);
+  if (item) {
+    preferencesState.theme = item.theme;
+    preferencesState.lang = item.lang;
+  }
+})();
 
 subscribe(preferencesState, async () => {
   await storage.setItem(storageKey, preferencesState);
