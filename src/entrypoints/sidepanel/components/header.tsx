@@ -22,7 +22,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ models }: HeaderProps) => {
-  const ollamaSnap = useSnapshot(ollamaState);
+  const { selectedModel } = useSnapshot(ollamaState);
 
   const handleDeleteChatHistory = useCallback(() => {
     ollamaState.chatHistory = [];
@@ -35,10 +35,10 @@ export const Header = ({ models }: HeaderProps) => {
   return (
     <div className="flex items-center justify-between border-b px-4 py-3">
       <div className="flex items-center gap-2">
-        <AssistantAvatar model={ollamaSnap.selectedModel} />
+        <AssistantAvatar model={selectedModel} />
         <div>
           <h1 className="font-semibold">{EXTENSION_NAME}</h1>
-          <p className="text-muted-foreground text-xs">{ollamaSnap.selectedModel}</p>
+          <p className="text-muted-foreground text-xs">{selectedModel}</p>
         </div>
       </div>
 
@@ -61,7 +61,7 @@ export const Header = ({ models }: HeaderProps) => {
           <DropdownMenuSeparator />
           <DropdownMenuLabel>Select model</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup value={ollamaSnap.selectedModel ?? ""}>
+          <DropdownMenuRadioGroup value={selectedModel ?? ""}>
             {models.map((model) => (
               <DropdownMenuRadioItem
                 key={model.name}

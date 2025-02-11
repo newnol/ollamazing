@@ -3,13 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useSnapshot } from "valtio";
 
 export function useCheckOllamaServer() {
-  const ollamaSnap = useSnapshot(ollamaState);
+  const { host } = useSnapshot(ollamaState);
 
   return useQuery({
-    queryKey: ["checkOllamaServer"],
+    queryKey: ["checkOllamaServer", host],
     queryFn: async () => {
       try {
-        const response = await fetch(ollamaSnap.host);
+        const response = await fetch(host);
         if (!response.ok) {
           throw new Error("Failed to check Ollama server");
         }

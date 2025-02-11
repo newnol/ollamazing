@@ -3,7 +3,7 @@ import { ChatInput } from "./chat-input";
 import { UserMessage } from "./user-message";
 import { AssistantAvatar } from "@/components/assistant-avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getOllamaClient } from "@/lib/ollama-client";
+import { useOllama } from "@/hooks/use-ollama";
 import { ollamaState } from "@/lib/states/ollama.state";
 import { ChatMessage } from "@/shared/types";
 import { useMutation } from "@tanstack/react-query";
@@ -11,9 +11,11 @@ import { useCallback, useRef, useState } from "react";
 import { useSnapshot } from "valtio";
 
 export function ChatInterface() {
-  const ollamaSnap = useSnapshot(ollamaState);
+  const { chatHistory, selectedModel } = useSnapshot(ollamaState);
 
-  const chatMessages = useMemo(() => ollamaSnap.chatHistory, [ollamaSnap.chatHistory]);
+  const ollama = useOllama();
+
+  const chatMessages = useMemo(() => chatHistory, [chatHistory]);
 
   const [curResponseMessage, setCurResponseMessage] = useState<string[]>([]);
   const [chatResponse, setChatResponse] = useState<{ abort: () => void }>();
@@ -43,13 +45,12 @@ export function ChatInterface() {
         role: "user",
         content: messageContent,
         timestamp: new Date(),
-        model: ollamaSnap.selectedModel,
+        model: selectedModel,
         images,
       };
       const newMessages = [...chatMessages, userMessage];
       ollamaState.chatHistory.push(userMessage);
 
-      const ollama = await getOllamaClient();
       const response = await ollama.chat({
         model,
         messages: newMessages
@@ -99,10 +100,10 @@ export function ChatInterface() {
 
   const handleSend = useCallback(
     (messageContent: string, images?: string[]) => {
-      if (!ollamaSnap.selectedModel || !messageContent.trim()) return;
-      mutateSendMessage({ messageContent, model: ollamaSnap.selectedModel, images });
+      if (!selectedModel || !messageContent.trim()) return;
+      mutateSendMessage({ messageContent, model: selectedModel, images });
     },
-    [ollamaSnap.selectedModel, mutateSendMessage],
+    [selectedModel, mutateSendMessage],
   );
 
   const handleAbort = useCallback(() => {
@@ -113,8 +114,8 @@ export function ChatInterface() {
     <div className="relative flex size-full flex-col overflow-y-hidden">
       {chatMessages.length === 0 ? (
         <div className="mt-4 flex h-full flex-col items-center justify-center">
-          <AssistantAvatar model={ollamaSnap.selectedModel} className="size-24" />
-          <p className="mb-4 font-mono text-xl font-semibold">{ollamaSnap.selectedModel}</p>
+          <AssistantAvatar model={selectedModel} className="size-24" />
+          <p className="mb-4 font-mono text-xl font-semibold">{selectedModel}</p>
         </div>
       ) : (
         <div className="flex-grow overflow-y-hidden">
@@ -137,7 +138,7 @@ export function ChatInterface() {
                   role: "assistant",
                   content: curResponseMessage.join(""),
                   timestamp: new Date(),
-                  model: ollamaSnap.selectedModel,
+                  model: selectedModel,
                 }}
                 className="p-3"
               />
