@@ -42,9 +42,7 @@ module.exports = {
         },
       },
       borderRadius: {
-        // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
         lg: `var(--radius)`,
-        // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
         md: `calc(var(--radius) - 2px)`,
         sm: "calc(var(--radius) - 4px)",
       },
