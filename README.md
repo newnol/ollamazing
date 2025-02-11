@@ -72,7 +72,7 @@
 - [![TailwindCSS][TailwindCSS]][TailwindCSS-url]
 - [![Shadcn][Shadcn]][Shadcn-url]
 - [![Tanstack Query][Tanstack Query]][Tanstack Query-url]
-
+- [![Valtio][Valtio]][Valtio-url]
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
@@ -200,3 +200,5 @@ Project Link: [https://github.com/buiducnhat/ollamazing](https://github.com/buid
 [Shadcn-url]: https://ui.shadcn.com/
 [Tanstack Query]: https://img.shields.io/badge/tanstackquery-black?style=for-the-badge&logo=reactquery
 [Tanstack Query-url]: https://tanstack.com/query
+[Valtio]: https://img.shields.io/badge/valtio-gray?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAABB0lEQVR4nOyVwYmGMBCFdxfRDkK85WQzerACG0kbViA24N0OrMACLEAN6MXs3twgyz7dgWV+mO/mY5x8IRPy8cYMEUKIEEKEECKEECGECCHYCUXE/621Sqnfa4ZhaNuWuNBdxnH8RDRNc78huyMTIQQ7IeotK4oijuMw0Vr3ff8fQtbaqqrCJM/zuq6NMWfinCvL8s82z4SUUlmWhUmSJMaYMFyWhWLDcYZECPFghvZ9v4zIcRzOuTBc19V7fynbtu3+Ku/3S38kTdMo+t6V936aJmJPEpfHdZ5nYkN2MyRCCHZC1Me16zqt9fn56Ia/BuyOTIQQIoQQIYQIIUQIIUKIrwAAAP//7BxzdBirqlAAAAAASUVORK5CYII=
+[Valtio-url]: https://valtio.dev/
