@@ -3,21 +3,20 @@ import { ChatInput } from "./chat-input";
 import { UserMessage } from "./user-message";
 import { AssistantAvatar } from "@/components/assistant-avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useGetChatHistory } from "@/hooks/use-get-chat-history";
 import { getOllamaClient } from "@/lib/ollama-client";
-import { chatHistory } from "@/lib/storage";
-import { Message } from "@/shared/types";
+import { ollamaState } from "@/lib/states/ollama.state";
+import { ChatMessage } from "@/shared/types";
 import { useMutation } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { useSnapshot } from "valtio";
 
 export function ChatInterface() {
-  const { data: selectedModel } = useGetSelectedModel();
+  const ollamaSnap = useSnapshot(ollamaState);
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const chatMessages = useMemo(() => ollamaSnap.chatHistory, [ollamaSnap.chatHistory]);
+
   const [curResponseMessage, setCurResponseMessage] = useState<string[]>([]);
   const [chatResponse, setChatResponse] = useState<{ abort: () => void }>();
-
-  useGetChatHistory((data) => setMessages(data));
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -40,15 +39,15 @@ export function ChatInterface() {
       model: string;
       images?: string[];
     }) => {
-      const userMessage: Message = {
+      const userMessage: ChatMessage = {
         role: "user",
         content: messageContent,
         timestamp: new Date(),
-        model: selectedModel,
+        model: ollamaSnap.selectedModel,
         images,
       };
-      const newMessages = [...messages, userMessage];
-      setMessages(newMessages);
+      const newMessages = [...chatMessages, userMessage];
+      ollamaState.chatHistory.push(userMessage);
 
       const ollama = await getOllamaClient();
       const response = await ollama.chat({
@@ -58,7 +57,7 @@ export function ChatInterface() {
           .map((msg) => ({
             role: msg.role,
             content: msg.content,
-            images: msg.images,
+            images: msg.images as string[],
           })),
         stream: true,
       });
@@ -70,20 +69,20 @@ export function ChatInterface() {
       }
     },
     onSuccess: (_, variables) => {
-      const mergedMessage: Message = {
+      const mergedMessage: ChatMessage = {
         role: "assistant",
         content: curResponseMessage.join(""),
         timestamp: new Date(),
         model: variables.model,
         images: variables.images,
       };
-      setMessages((prev) => [...prev, mergedMessage]);
+      ollamaState.chatHistory.push(mergedMessage);
       setCurResponseMessage([]);
       scrollToBottom();
     },
     onError: (error, variables) => {
       if (error.name === "AbortError") {
-        const mergedMessage: Message = {
+        const mergedMessage: ChatMessage = {
           role: "assistant",
           content: curResponseMessage.join(""),
           timestamp: new Date(),
@@ -91,7 +90,7 @@ export function ChatInterface() {
           aborted: true,
           images: variables.images,
         };
-        setMessages((prev) => [...prev, mergedMessage]);
+        ollamaState.chatHistory.push(mergedMessage);
         setCurResponseMessage([]);
         scrollToBottom();
       }
@@ -100,33 +99,27 @@ export function ChatInterface() {
 
   const handleSend = useCallback(
     (messageContent: string, images?: string[]) => {
-      if (!selectedModel || !messageContent.trim()) return;
-      mutateSendMessage({ messageContent, model: selectedModel, images });
+      if (!ollamaSnap.selectedModel || !messageContent.trim()) return;
+      mutateSendMessage({ messageContent, model: ollamaSnap.selectedModel, images });
     },
-    [selectedModel, mutateSendMessage],
+    [ollamaSnap.selectedModel, mutateSendMessage],
   );
 
   const handleAbort = useCallback(() => {
     chatResponse?.abort();
   }, [chatResponse]);
 
-  useEffect(() => {
-    if (messages.length > 0) {
-      chatHistory.setValue(messages);
-    }
-  }, [messages]);
-
   return (
     <div className="relative flex size-full flex-col overflow-y-hidden">
-      {messages.length === 0 ? (
+      {chatMessages.length === 0 ? (
         <div className="mt-4 flex h-full flex-col items-center justify-center">
-          <AssistantAvatar model={selectedModel} className="size-24" />
-          <p className="mb-4 font-mono text-xl font-semibold">{selectedModel}</p>
+          <AssistantAvatar model={ollamaSnap.selectedModel} className="size-24" />
+          <p className="mb-4 font-mono text-xl font-semibold">{ollamaSnap.selectedModel}</p>
         </div>
       ) : (
         <div className="flex-grow overflow-y-hidden">
           <ScrollArea ref={scrollAreaRef} className="flex size-full">
-            {messages.map((message, index) =>
+            {chatMessages.map((message, index) =>
               message.role === "assistant" ? (
                 <AssistantMessage key={index.toString()} message={message} className="p-3" />
               ) : (
@@ -144,7 +137,7 @@ export function ChatInterface() {
                   role: "assistant",
                   content: curResponseMessage.join(""),
                   timestamp: new Date(),
-                  model: selectedModel,
+                  model: ollamaSnap.selectedModel,
                 }}
                 className="p-3"
               />

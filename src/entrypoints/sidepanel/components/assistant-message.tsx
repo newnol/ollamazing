@@ -1,7 +1,7 @@
 import { AssistantAvatar } from "@/components/assistant-avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Message } from "@/shared/types";
+import { ChatMessage } from "@/shared/types";
 import dayjs from "dayjs";
 import "katex/dist/katex.min.css";
 import { CopyIcon } from "lucide-react";
@@ -15,7 +15,7 @@ import { toast } from "sonner";
 
 interface AssistantMessageProps {
   className?: string;
-  message: Message;
+  message: ChatMessage;
 }
 
 const MarkdownContent = ({ content }: { content: string }) => (
@@ -77,7 +77,7 @@ const MarkdownContent = ({ content }: { content: string }) => (
   </ReactMarkdown>
 );
 
-const renderContent = (message: Message) => {
+const renderContent = (message: ChatMessage) => {
   if (message.model?.includes("deepseek-r1")) {
     const thinkMatch = message.content.match(/<think>(.*?)(<\/think>|$)/s);
     const thinkContent = thinkMatch ? thinkMatch[1] : "";

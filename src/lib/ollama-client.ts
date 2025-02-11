@@ -1,8 +1,6 @@
-import { ollamaHost } from "./storage";
+import { ollamaState } from "./states/ollama.state";
 import { Ollama } from "ollama/browser";
 
 export const getOllamaClient = async () => {
-  const host = await ollamaHost.getValue();
-
-  return new Ollama({ host });
+  return new Ollama({ host: ollamaState.host });
 };

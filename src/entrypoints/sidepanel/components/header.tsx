@@ -10,47 +10,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useGetSelectedModel } from "@/hooks/use-get-selected-model";
-import { chatHistory, selectedModel } from "@/lib/storage";
+import { ollamaState } from "@/lib/states/ollama.state";
 import { openOptionsPage } from "@/lib/utils";
 import { EXTENSION_NAME } from "@/shared/consts";
-import { useMutation } from "@tanstack/react-query";
 import { DeleteIcon, EllipsisVerticalIcon, SettingsIcon } from "lucide-react";
 import { ModelResponse } from "ollama";
+import { useSnapshot } from "valtio";
 
 interface HeaderProps {
   models: ModelResponse[];
 }
 
 export const Header = ({ models }: HeaderProps) => {
-  const selectedModelQuery = useGetSelectedModel();
+  const ollamaSnap = useSnapshot(ollamaState);
 
-  const setSelectedModelMutation = useMutation({
-    mutationFn: async (model: string) => {
-      await selectedModel.setValue(model);
-    },
-    onSuccess: () => {
-      selectedModelQuery.refetch();
-    },
-  });
+  const handleDeleteChatHistory = useCallback(() => {
+    ollamaState.chatHistory = [];
+  }, []);
 
-  const deleteChatHistoryMutation = useMutation({
-    mutationFn: async () => {
-      await chatHistory.setValue([]);
-    },
-    onSuccess: () => {
-      // Reload sidepanel
-      window.location.reload();
-    },
-  });
+  const handleSelectModel = useCallback((model: string) => {
+    ollamaState.selectedModel = model;
+  }, []);
 
   return (
     <div className="flex items-center justify-between border-b px-4 py-3">
       <div className="flex items-center gap-2">
-        <AssistantAvatar model={selectedModelQuery.data} />
+        <AssistantAvatar model={ollamaSnap.selectedModel} />
         <div>
           <h1 className="font-semibold">{EXTENSION_NAME}</h1>
-          <p className="text-muted-foreground text-xs">{selectedModelQuery.data}</p>
+          <p className="text-muted-foreground text-xs">{ollamaSnap.selectedModel}</p>
         </div>
       </div>
 
@@ -66,22 +54,19 @@ export const Header = ({ models }: HeaderProps) => {
             Open options
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="text-destructive"
-            onSelect={() => deleteChatHistoryMutation.mutate()}
-          >
+          <DropdownMenuItem className="text-destructive" onSelect={handleDeleteChatHistory}>
             <DeleteIcon />
             Delete history
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuLabel>Select model</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup value={selectedModelQuery.data ?? ""}>
+          <DropdownMenuRadioGroup value={ollamaSnap.selectedModel ?? ""}>
             {models.map((model) => (
               <DropdownMenuRadioItem
                 key={model.name}
                 value={model.name}
-                onSelect={() => setSelectedModelMutation.mutate(model.name)}
+                onSelect={() => handleSelectModel(model.name)}
               >
                 {model.name}
               </DropdownMenuRadioItem>

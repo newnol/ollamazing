@@ -1,7 +1,7 @@
-export interface Message {
+export interface ChatMessage {
   role: "system" | "user" | "assistant";
   content: string;
-  images?: string[];
+  images?: string[] | readonly string[];
   timestamp: Date;
   model?: string | null;
   aborted?: boolean;

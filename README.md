@@ -83,8 +83,8 @@ This extension is built using `WXT` and `React`, so ensure to install `Node.Js` 
 
 ### Prerequisites
 
-- **Package manager**: We can use any package managers like `npm`, `yarn`, `pnpm`, `bun`. This project is currently installed by `pnpm`, that the field `pnpm-lock.yaml` exists.
-- **Ollama**: This extension uses `Ollama`, so you have to have a `Ollama` server from anywhere, installing on local for example. For more details, read [Ollama](https://github.com/buiducnhat/ollama). 
+- **Package manager**: We can use any package managers like `npm`, `yarn`, `pnpm`, `bun`. This project is currently installed by `npm`, that the field `package-lock.json` exists.
+- **Ollama**: This extension uses `Ollama`, so you have to have a `Ollama` server from anywhere, installing on local for example. For more details, read [Ollama](https://github.com/buiducnhat/ollama).
 
 ### Installation
 
@@ -94,8 +94,8 @@ This extension is built using `WXT` and `React`, so ensure to install `Node.Js` 
    ```
 2. Install dependencies
    ```sh
-   pnpm install
-   # or npm install, yarn install, bun install
+   npm install
+   # or yarn install, pnpm install, bun install
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -107,8 +107,8 @@ This extension is built using `WXT` and `React`, so ensure to install `Node.Js` 
 To run local development, run the following command:
 
 ```sh
-pnpm run dev
-# or npm run dev, yarn run dev, bun run dev
+npm run dev
+# or yarn run dev, pnpm run dev, bun run dev
 ```
 
 then, a new browser window will open with the extension installed.
@@ -120,11 +120,14 @@ then, a new browser window will open with the extension installed.
 ## Roadmap
 
 - [x] Basic, chat with AI assistant.
-- [ ] Improve UI, UX.
-  - [ ] Adapt for almost popular models's message format.
+- [x] Improve UI, UX.
+  - [x] Adapt for almost popular models's message format.
   - [ ] Interact with images.
 - [ ] More settings like theme, language.
 - [ ] Manage model, use more Ollama APIs.
+- [ ] Content script to be injected into the pages.
+  - [ ] Add utility when user select text in the page.
+  - [ ] Add context menu to translate text, or define a word.
 
 See the [open issues](https://github.com/buiducnhat/ollamazing/issues) for a full list of proposed features (and known issues).
 
