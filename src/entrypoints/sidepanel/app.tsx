@@ -5,6 +5,7 @@ import "@/assets/globals.css";
 import { Button } from "@/components/ui/button";
 import { useCheckOllamaServer } from "@/hooks/use-check-ollama-server";
 import { useGetLocalModels } from "@/hooks/use-get-local-models";
+import { useInitState } from "@/hooks/use-init-state";
 import { openOptionsPage } from "@/lib/utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -14,6 +15,8 @@ import React from "react";
 dayjs.extend(relativeTime);
 
 function App() {
+  useInitState();
+
   const checkOllamaServerQuery = useCheckOllamaServer();
   const localModelsQuery = useGetLocalModels({ enabled: checkOllamaServerQuery.isSuccess });
 

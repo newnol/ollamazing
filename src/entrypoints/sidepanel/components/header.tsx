@@ -35,7 +35,10 @@ export const Header = ({ models }: HeaderProps) => {
   return (
     <div className="flex items-center justify-between border-b px-4 py-3">
       <div className="flex items-center gap-2">
-        <AssistantAvatar model={selectedModel} />
+        <AssistantAvatar
+          model={selectedModel}
+          className="ring-border size-8 rounded-xl bg-white p-0.5 ring"
+        />
         <div>
           <h1 className="font-semibold">{EXTENSION_NAME}</h1>
           <p className="text-muted-foreground text-xs">{selectedModel}</p>
@@ -54,7 +57,10 @@ export const Header = ({ models }: HeaderProps) => {
             Open options
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="text-destructive" onSelect={handleDeleteChatHistory}>
+          <DropdownMenuItem
+            className="text-destructive hover:bg-destructive! hover:text-destructive-foreground!"
+            onSelect={handleDeleteChatHistory}
+          >
             <DeleteIcon />
             Delete history
           </DropdownMenuItem>

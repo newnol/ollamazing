@@ -3,12 +3,17 @@ import { ChatMessage } from "@/shared/types";
 import { proxy, subscribe } from "valtio";
 
 const storageKey = "local:ollama";
+let isUpdating = false;
 
-export interface OllamaState {
+type OllamaState = {
   host: string;
   selectedModel: string | null;
   chatHistory: ChatMessage[];
-}
+};
+
+type StorageData = OllamaState & {
+  chatHistory: Array<ChatMessage & { timestamp: number }>;
+};
 
 const fallbackState: OllamaState = {
   host: DEFAULT_OLLAMA_HOST,
@@ -18,23 +23,28 @@ const fallbackState: OllamaState = {
 
 export const ollamaState = proxy<OllamaState>(fallbackState);
 
-(async () => {
-  const item = await storage.getItem<any>(storageKey);
-
-  if (item) {
-    ollamaState.host = item.host ?? fallbackState.host;
-    ollamaState.selectedModel = item?.selectedModel ?? fallbackState.selectedModel;
-    ollamaState.chatHistory =
-      item?.chatHistory?.map((msg: any) => ({
-        ...msg,
-        images: msg.images?.slice(),
-        timestamp: new Date(msg.timestamp),
-      })) ?? fallbackState.chatHistory;
+export const syncFromStorage = async (data?: StorageData) => {
+  if (isUpdating) return;
+  isUpdating = true;
+  if (!data) {
+    data = (await storage.getItem<StorageData>(storageKey)) ?? undefined;
   }
-})();
 
-subscribe(ollamaState, async () => {
-  await storage.setItem(storageKey, {
+  ollamaState.host = data?.host ?? fallbackState.host;
+  ollamaState.selectedModel = data?.selectedModel ?? fallbackState.selectedModel;
+  ollamaState.chatHistory =
+    data?.chatHistory?.map((msg: any) => ({
+      ...msg,
+      images: msg.images?.slice(),
+      timestamp: new Date(msg.timestamp),
+    })) ?? fallbackState.chatHistory;
+  isUpdating = false;
+};
+
+const syncToStorage = async () => {
+  if (isUpdating) return;
+  isUpdating = true;
+  const storageItem = {
     host: ollamaState.host,
     selectedModel: ollamaState.selectedModel,
     chatHistory: ollamaState.chatHistory.map((msg) => ({
@@ -42,5 +52,17 @@ subscribe(ollamaState, async () => {
       images: msg.images?.slice(),
       timestamp: msg.timestamp.getTime(),
     })),
-  });
+  };
+
+  await storage.setItem(storageKey, storageItem);
+  isUpdating = false;
+};
+
+subscribe(ollamaState, async () => {
+  await syncToStorage();
+});
+
+storage.watch(storageKey, async (newValue: StorageData | null) => {
+  if (!newValue) return;
+  await syncFromStorage(newValue);
 });

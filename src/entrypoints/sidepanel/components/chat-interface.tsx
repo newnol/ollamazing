@@ -124,12 +124,7 @@ export function ChatInterface() {
               message.role === "assistant" ? (
                 <AssistantMessage key={index.toString()} message={message} className="p-3" />
               ) : (
-                <UserMessage
-                  key={index.toString()}
-                  content={message.content}
-                  timestamp={message.timestamp}
-                  className="p-3"
-                />
+                <UserMessage key={index.toString()} message={message} className="p-3" />
               ),
             )}
             {curResponseMessage.length > 0 && (

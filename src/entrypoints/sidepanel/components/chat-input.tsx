@@ -51,9 +51,14 @@ export function ChatInput({ onSend, onAbort, isGenerating }: ChatInputProps) {
 
   return (
     <div className="bg-background z-10 px-3 pb-3">
-      <div className={cn("flex flex-col rounded-xl border", isFocusing && "ring ring-gray-400")}>
+      <div
+        className={cn(
+          "flex flex-col rounded-xl border",
+          isFocusing && "ring ring-gray-400 dark:ring-gray-700",
+        )}
+      >
         <textarea
-          className="placeholder:text-muted-foreground scrollbar-none min-h-[42px] w-full resize-none bg-transparent p-3 pb-1.5 text-sm ring-0 outline-none"
+          className="scrollbar-none min-h-[42px] w-full resize-none bg-transparent p-3 pb-1.5 text-sm outline-none"
           value={input}
           onChange={handleTextareaChange}
           onKeyDown={handleKeyDown}
@@ -69,11 +74,10 @@ export function ChatInput({ onSend, onAbort, isGenerating }: ChatInputProps) {
               className={buttonVariants({
                 variant: "ghost",
                 size: "icon",
-                className: "size-8 cursor-pointer hover:bg-gray-100",
+                className: "size-8 cursor-pointer",
               })}
             >
-              <PaperclipIcon className="h-5 w-5 text-gray-500" />
-              <span className="sr-only">Attach file</span>
+              <PaperclipIcon className="size-5 text-gray-500" />
             </label>
             <input
               type="file"
@@ -96,7 +100,10 @@ export function ChatInput({ onSend, onAbort, isGenerating }: ChatInputProps) {
                 <span>
                   {selectedImages.length} image{selectedImages.length > 1 ? "s" : ""}
                 </span>
-                <button className="hover:text-gray-700" onClick={() => setSelectedImages([])}>
+                <button
+                  className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300"
+                  onClick={() => setSelectedImages([])}
+                >
                   ×
                 </button>
               </div>
@@ -110,8 +117,7 @@ export function ChatInput({ onSend, onAbort, isGenerating }: ChatInputProps) {
                 })}
                 onClick={onAbort}
               >
-                <SquareIcon className="text-current" />
-                <span className="sr-only">Stop generating</span>
+                <SquareIcon className="size-4 text-current" />
               </Button>
             ) : (
               <Button
@@ -120,13 +126,12 @@ export function ChatInput({ onSend, onAbort, isGenerating }: ChatInputProps) {
                   variant: "ghost",
                   size: "icon",
                   className:
-                    "size-8 cursor-pointer transition-all disabled:bg-gray-200 disabled:text-gray-400 disabled:ring disabled:ring-gray-300",
+                    "size-8 cursor-pointer transition-all disabled:bg-gray-200 disabled:text-gray-400 disabled:ring disabled:ring-gray-300 dark:disabled:bg-gray-900 dark:disabled:text-gray-500 dark:disabled:ring dark:disabled:ring-gray-500",
                 })}
                 disabled={!input.trim() && selectedImages.length === 0}
                 onClick={handleSend}
               >
-                <ArrowUpIcon className="text-current" />
-                <span className="sr-only">Send message</span>
+                <ArrowUpIcon className="size-6 text-current" />
               </Button>
             )}
           </div>

@@ -82,7 +82,6 @@ const renderContent = (message: ChatMessage) => {
     const thinkMatch = message.content.match(/<think>(.*?)(<\/think>|$)/s);
     const thinkContent = thinkMatch ? thinkMatch[1] : "";
     const mainContent = message.content.replace(/<think>.*?(<\/think>|$)/s, "").trim();
-    console.log(mainContent);
     return (
       <>
         {thinkContent && (
@@ -106,7 +105,7 @@ export function AssistantMessage({ message, className }: AssistantMessageProps) 
     <div className={cn("flex flex-col gap-2", className)}>
       <div className="flex items-center gap-2">
         <AssistantAvatar
-          className="size-8 rounded-xl border border-gray-300 p-0.5"
+          className="ring-border size-6 rounded-lg bg-white p-0.5 ring"
           model={message.model}
         />
         <div className="font-mono text-xs font-bold">{message.model}</div>
