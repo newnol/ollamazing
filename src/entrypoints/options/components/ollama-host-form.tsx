@@ -20,20 +20,28 @@ const formSchema = z.object({
   ollamaHost: z.string().url().default(DEFAULT_OLLAMA_HOST),
 });
 
-export function OllamaForm() {
+export function OllamaHostForm() {
   const { host } = useSnapshot(ollamaState);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ollamaHost: host,
+      ollamaHost: DEFAULT_OLLAMA_HOST,
     },
   });
+
+  const currentHost = form.watch("ollamaHost");
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     ollamaState.host = values.ollamaHost;
     toast.success("Ollama host updated");
   };
+
+  useEffect(() => {
+    form.reset({
+      ollamaHost: host,
+    });
+  }, [form, host]);
 
   return (
     <Form {...form}>
@@ -44,17 +52,22 @@ export function OllamaForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Ollama host</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
+              <div className="flex items-center gap-2">
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <Button
+                  type="submit"
+                  disabled={form.formState.isSubmitting || currentHost === host}
+                >
+                  Save
+                </Button>
+              </div>
 
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="flex justify-end">
-          <Button type="submit">Save</Button>
-        </div>
       </form>
     </Form>
   );

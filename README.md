@@ -123,8 +123,11 @@ then, a new browser window will open with the extension installed.
 - [x] Improve UI, UX.
   - [x] Adapt for almost popular models's message format.
   - [ ] Interact with images.
-- [ ] More settings like theme, language.
-- [ ] Manage model, use more Ollama APIs.
+- [x] Setup sync global state with extension storage.
+- [ ] Preferences settings.
+  - [x] Light/Dark theme.
+  - [ ] Multiple languages.
+- [x] Manage model, use more Ollama APIs.
 - [ ] Content script to be injected into the pages.
   - [ ] Add utility when user select text in the page.
   - [ ] Add context menu to translate text, or define a word.

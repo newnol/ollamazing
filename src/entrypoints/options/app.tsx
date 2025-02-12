@@ -1,4 +1,4 @@
-import { OllamaForm } from "./components/ollama-form";
+import { OllamaContent } from "./components/ollama-content";
 import { PreferencesForm } from "./components/preferences-form";
 import "@/assets/globals.css";
 import {
@@ -25,8 +25,9 @@ const menuItems = [
     value: "ollama",
     icon: LayoutDashboardIcon,
     label: "Ollama",
-    content: <OllamaForm />,
+    content: <OllamaContent />,
   },
+
   {
     value: "preferences",
     icon: SettingsIcon,
