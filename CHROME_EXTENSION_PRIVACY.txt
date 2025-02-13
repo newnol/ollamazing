@@ -1,0 +1,13 @@
+Last updated: 2025-02-13
+
+Ollamazing does not collect, store, or share any personal data. All interactions with the AI models occur locally on your device, and no data is transmitted to external servers.
+
+Data Collection
+No personal information is collected.
+No data is sent to third-party services.
+All chat interactions remain local to your device.
+Permissions
+This extension may require permissions to access local files or browser storage for saving chat history/settings, but this data never leaves your device.
+
+Contact
+If you have any questions, please contact nhaths4701@gmail.com.
