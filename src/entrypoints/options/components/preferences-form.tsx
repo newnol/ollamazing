@@ -34,17 +34,17 @@ export function PreferencesForm() {
 
   const themeOptions = useMemo(
     () => [
-      { label: t("System"), value: "system", icon: MonitorIcon },
-      { label: t("Dark"), value: "dark", icon: MoonIcon },
-      { label: t("Light"), value: "light", icon: SunIcon },
+      { label: t("system"), value: "system", icon: MonitorIcon },
+      { label: t("dark"), value: "dark", icon: MoonIcon },
+      { label: t("light"), value: "light", icon: SunIcon },
     ],
     [t],
   );
 
   const langOptions = useMemo(
     () => [
-      { label: t("English"), value: "en" },
-      { label: t("Vietnamese"), value: "vi" },
+      { label: t("english"), value: "en" },
+      { label: t("vietnamese"), value: "vi" },
     ],
     [t],
   );
@@ -76,7 +76,7 @@ export function PreferencesForm() {
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder={t("Select a theme")} />
+                    <SelectValue placeholder={t("select a theme")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
