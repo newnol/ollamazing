@@ -120,13 +120,13 @@ then, a new browser window will open with the extension installed.
 ## Roadmap
 
 - [x] Basic, chat with AI assistant.
-- [x] Improve UI, UX.
+- [ ] Improve UI, UX.
   - [x] Adapt for almost popular models's message format.
   - [ ] Interact with images.
 - [x] Setup sync global state with extension storage.
-- [ ] Preferences settings.
+- [x] Preferences settings.
   - [x] Light/Dark theme.
-  - [ ] Multiple languages.
+  - [x] Multiple languages.
 - [x] Manage model, use more Ollama APIs.
 - [ ] Content script to be injected into the pages.
   - [ ] Add utility when user select text in the page.
