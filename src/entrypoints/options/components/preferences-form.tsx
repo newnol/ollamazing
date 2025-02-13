@@ -43,10 +43,10 @@ export function PreferencesForm() {
 
   const langOptions = useMemo(
     () => [
-      { label: t("english"), value: "en" },
-      { label: t("vietnamese"), value: "vi" },
+      { label: "English", value: "en" },
+      { label: "Tiếng Việt", value: "vi" },
     ],
-    [t],
+    [],
   );
 
   const form = useForm<z.infer<typeof formSchema>>({

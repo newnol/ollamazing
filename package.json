@@ -2,7 +2,7 @@
   "name": "ollamazing",
   "description": "Web extension for Ollama",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "scripts": {
     "dev": "wxt",
@@ -13,7 +13,7 @@
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
     "postinstall": "wxt prepare",
-    "format": "prettier --write ./src/**/*",
+    "format": "prettier --write ./src/**/*.{ts,tsx,json,html,css}",
     "lint": "eslint ./src"
   },
   "dependencies": {
