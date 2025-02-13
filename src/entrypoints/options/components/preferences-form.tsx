@@ -18,6 +18,7 @@ import { preferencesState } from "@/lib/states/preferences.state";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useSnapshot } from "valtio";
 import * as z from "zod";
@@ -27,19 +28,26 @@ const formSchema = z.object({
   lang: z.enum(["en", "vi"]).default("en"),
 });
 
-const themeOptions = [
-  { label: "System", value: "system", icon: MonitorIcon },
-  { label: "Dark", value: "dark", icon: MoonIcon },
-  { label: "Light", value: "light", icon: SunIcon },
-];
-
-const langOptions = [
-  { label: "English", value: "en" },
-  { label: "Vietnamese", value: "vi" },
-];
-
 export function PreferencesForm() {
+  const { t, i18n } = useTranslation();
   const snap = useSnapshot(preferencesState);
+
+  const themeOptions = useMemo(
+    () => [
+      { label: t("System"), value: "system", icon: MonitorIcon },
+      { label: t("Dark"), value: "dark", icon: MoonIcon },
+      { label: t("Light"), value: "light", icon: SunIcon },
+    ],
+    [t],
+  );
+
+  const langOptions = useMemo(
+    () => [
+      { label: t("English"), value: "en" },
+      { label: t("Vietnamese"), value: "vi" },
+    ],
+    [t],
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,7 +60,8 @@ export function PreferencesForm() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     preferencesState.theme = values.theme;
     preferencesState.lang = values.lang;
-    toast.success("Preferences updated");
+    await i18n.changeLanguage(values.lang);
+    toast.success(t("preferences updated"));
   };
 
   return (
@@ -63,11 +72,11 @@ export function PreferencesForm() {
           name="theme"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Theme</FormLabel>
+              <FormLabel>{t("theme")}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a theme" />
+                    <SelectValue placeholder={t("Select a theme")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -89,7 +98,7 @@ export function PreferencesForm() {
           name="lang"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Language</FormLabel>
+              <FormLabel>{t("preferences")}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
@@ -110,7 +119,7 @@ export function PreferencesForm() {
         />
 
         <div className="flex justify-end">
-          <Button type="submit">Save</Button>
+          <Button type="submit">{t("save")}</Button>
         </div>
       </form>
     </Form>

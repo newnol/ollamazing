@@ -11,11 +11,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 dayjs.extend(relativeTime);
 
 function App() {
   useInitState();
+
+  const { t } = useTranslation();
 
   const checkOllamaServerQuery = useCheckOllamaServer();
   const localModelsQuery = useGetLocalModels({ enabled: checkOllamaServerQuery.isSuccess });
@@ -26,9 +29,9 @@ function App() {
   if (checkOllamaServerQuery.error) {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-4">
-        <div className="text-lg">Please check your Ollama server</div>
+        <div className="text-lg">{t("check ollama server")}</div>
         <Button className="cursor-pointer" onClick={openOptionsPage}>
-          Open Options
+          {t("open settings")}
         </Button>
       </div>
     );
@@ -36,9 +39,9 @@ function App() {
   if (localModelsQuery.data?.length === 0) {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-4">
-        <div className="text-lg">No models found</div>
+        <div className="text-lg">{t("no models found")}</div>
         <Button className="cursor-pointer" onClick={openOptionsPage}>
-          Open Options
+          {t("open settings")}
         </Button>
       </div>
     );

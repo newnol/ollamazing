@@ -2,6 +2,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowUpIcon, PaperclipIcon, SquareIcon } from "lucide-react";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface ChatInputProps {
   onSend: (content: string, images?: string[]) => void;
@@ -10,6 +11,7 @@ interface ChatInputProps {
 }
 
 export function ChatInput({ onSend, onAbort, isGenerating }: ChatInputProps) {
+  const { t } = useTranslation();
   const [input, setInput] = useState("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isFocusing, setIsFocusing] = useState(false);
@@ -64,7 +66,7 @@ export function ChatInput({ onSend, onAbort, isGenerating }: ChatInputProps) {
           onKeyDown={handleKeyDown}
           onFocus={() => setIsFocusing(true)}
           onBlur={() => setIsFocusing(false)}
-          placeholder="Ask something..."
+          placeholder={t("ask something")}
         />
 
         <div className="flex items-center justify-between gap-2 px-3 pb-2">

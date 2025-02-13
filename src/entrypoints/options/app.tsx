@@ -12,37 +12,43 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar";
 import { useInitState } from "@/hooks/use-init-state";
+import "@/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { SettingsIcon, LayoutDashboardIcon } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 dayjs.extend(relativeTime);
 
-const menuItems = [
-  {
-    value: "ollama",
-    icon: LayoutDashboardIcon,
-    label: "Ollama",
-    content: <OllamaContent />,
-  },
-
-  {
-    value: "preferences",
-    icon: SettingsIcon,
-    label: "Preferences",
-    content: <PreferencesForm />,
-  },
-] as const;
-
 function App() {
+  const { t } = useTranslation();
+  const menuItems = React.useMemo(
+    () => [
+      {
+        value: "ollama",
+        icon: LayoutDashboardIcon,
+        label: "Ollama",
+        content: <OllamaContent />,
+      },
+
+      {
+        value: "preferences",
+        icon: SettingsIcon,
+        label: t("preferences"),
+        content: <PreferencesForm />,
+      },
+    ],
+    [t],
+  );
+
   const [activeItem, setActiveItem] = React.useState<string>(menuItems[0].value);
 
   useInitState();
 
   return (
-    <SidebarProvider className="h-[500px] w-3xl items-start">
+    <SidebarProvider className="h-[500px] w-4xl items-start">
       <Sidebar collapsible="none" className="max-w-48">
         <SidebarContent>
           <SidebarGroup>

@@ -15,6 +15,7 @@ import { openOptionsPage } from "@/lib/utils";
 import { EXTENSION_NAME } from "@/shared/consts";
 import { DeleteIcon, EllipsisVerticalIcon, SettingsIcon } from "lucide-react";
 import { ModelResponse } from "ollama";
+import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
 
 interface HeaderProps {
@@ -22,6 +23,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ models }: HeaderProps) => {
+  const { t } = useTranslation();
   const { selectedModel } = useSnapshot(ollamaState);
 
   const handleDeleteChatHistory = useCallback(() => {
@@ -54,7 +56,7 @@ export const Header = ({ models }: HeaderProps) => {
         <DropdownMenuContent>
           <DropdownMenuItem onSelect={openOptionsPage}>
             <SettingsIcon />
-            Open options
+            {t("open settings")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -62,10 +64,10 @@ export const Header = ({ models }: HeaderProps) => {
             onSelect={handleDeleteChatHistory}
           >
             <DeleteIcon />
-            Delete history
+            {t("delete history")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuLabel>Select model</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("select model")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup value={selectedModel ?? ""}>
             {models.map((model) => (

@@ -12,6 +12,7 @@ import { ollamaState } from "@/lib/states/ollama.state";
 import { DEFAULT_OLLAMA_HOST } from "@/shared/consts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useSnapshot } from "valtio";
 import * as z from "zod";
@@ -21,6 +22,8 @@ const formSchema = z.object({
 });
 
 export function OllamaHostForm() {
+  const { t } = useTranslation();
+
   const { host } = useSnapshot(ollamaState);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -34,7 +37,7 @@ export function OllamaHostForm() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     ollamaState.host = values.ollamaHost;
-    toast.success("Ollama host updated");
+    toast.success(t("ollama host updated"));
   };
 
   useEffect(() => {
@@ -51,7 +54,7 @@ export function OllamaHostForm() {
           name="ollamaHost"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Ollama host</FormLabel>
+              <FormLabel>Ollama Server</FormLabel>
               <div className="flex items-center gap-2">
                 <FormControl>
                   <Input type="text" {...field} />
@@ -60,7 +63,7 @@ export function OllamaHostForm() {
                   type="submit"
                   disabled={form.formState.isSubmitting || currentHost === host}
                 >
-                  Save
+                  {t("save")}
                 </Button>
               </div>
 

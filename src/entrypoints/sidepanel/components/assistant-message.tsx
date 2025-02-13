@@ -5,6 +5,7 @@ import { ChatMessage } from "@/shared/types";
 import dayjs from "dayjs";
 import "katex/dist/katex.min.css";
 import { CopyIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -18,64 +19,68 @@ interface AssistantMessageProps {
   message: ChatMessage;
 }
 
-const MarkdownContent = ({ content }: { content: string }) => (
-  <ReactMarkdown
-    className="text-sm"
-    remarkPlugins={[remarkGfm, remarkMath]}
-    rehypePlugins={[rehypeKatex]}
-    components={{
-      code({ className, children, ...rest }) {
-        const match = /language-(\w+)/.exec(className || "");
-        return match ? (
-          <div className="overflow-hidden rounded-xl bg-zinc-600">
-            <div className="flex items-center justify-between py-1 pr-1 pl-2">
-              <div className="font-mono text-xs text-white">{match[1]}</div>
-              <Button
-                size="icon"
-                variant="ghost"
-                className={buttonVariants({
-                  variant: "ghost",
-                  className:
-                    "size-8 cursor-pointer text-white transition-all hover:bg-zinc-500 hover:text-white",
-                })}
-                onClick={async () => {
-                  await navigator.clipboard.writeText(String(children).replace(/\n$/, ""));
-                  toast.success("Copied to clipboard");
+const MarkdownContent = ({ content }: { content: string }) => {
+  const { t } = useTranslation();
+
+  return (
+    <ReactMarkdown
+      className="text-sm"
+      remarkPlugins={[remarkGfm, remarkMath]}
+      rehypePlugins={[rehypeKatex]}
+      components={{
+        code({ className, children, ...rest }) {
+          const match = /language-(\w+)/.exec(className || "");
+          return match ? (
+            <div className="overflow-hidden rounded-xl bg-zinc-600">
+              <div className="flex items-center justify-between py-1 pr-1 pl-2">
+                <div className="font-mono text-xs text-white">{match[1]}</div>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className={buttonVariants({
+                    variant: "ghost",
+                    className:
+                      "size-8 cursor-pointer text-white transition-all hover:bg-zinc-500 hover:text-white",
+                  })}
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(String(children).replace(/\n$/, ""));
+                    toast.success(t("copied to clipboard"));
+                  }}
+                >
+                  <CopyIcon />
+                </Button>
+              </div>
+              <SyntaxHighlighter
+                {...(rest as any)}
+                style={vscDarkPlus}
+                language={match[1]}
+                PreTag="div"
+                customStyle={{
+                  margin: 0,
+                  overflowX: "auto",
                 }}
               >
-                <CopyIcon />
-              </Button>
+                {String(children).replace(/\n$/, "")}
+              </SyntaxHighlighter>
             </div>
-            <SyntaxHighlighter
-              {...(rest as any)}
-              style={vscDarkPlus}
-              language={match[1]}
-              PreTag="div"
-              customStyle={{
-                margin: 0,
-                overflowX: "auto",
-              }}
+          ) : (
+            <code
+              {...rest}
+              className={cn("bg-muted overflow-x-auto rounded px-1 py-0.5 text-sm", className)}
             >
-              {String(children).replace(/\n$/, "")}
-            </SyntaxHighlighter>
-          </div>
-        ) : (
-          <code
-            {...rest}
-            className={cn("bg-muted overflow-x-auto rounded px-1 py-0.5 text-sm", className)}
-          >
-            {children}
-          </code>
-        );
-      },
-      p({ children }) {
-        return <p className="mb-4 whitespace-pre-wrap last:mb-0">{children}</p>;
-      },
-    }}
-  >
-    {content}
-  </ReactMarkdown>
-);
+              {children}
+            </code>
+          );
+        },
+        p({ children }) {
+          return <p className="mb-4 whitespace-pre-wrap last:mb-0">{children}</p>;
+        },
+      }}
+    >
+      {content}
+    </ReactMarkdown>
+  );
+};
 
 const renderContent = (message: ChatMessage) => {
   if (message.model?.includes("deepseek-r1")) {

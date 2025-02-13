@@ -19,12 +19,15 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Loader2Icon, MoreVerticalIcon, TrashIcon, CloudDownloadIcon } from "lucide-react";
 import { Ollama } from "ollama/browser";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useSnapshot } from "valtio";
 
 export function OllamaModelsManagement() {
   const { host } = useSnapshot(ollamaState);
   const ollama = new Ollama({ host });
+
+  const { t } = useTranslation();
 
   const {
     data: models,
@@ -42,12 +45,10 @@ export function OllamaModelsManagement() {
     mutationFn: (modelName: string) => ollama.delete({ model: modelName }),
     onSuccess: async () => {
       await refetch();
-      toast.success("Model deleted successfully");
+      toast.success(t("model delete success"));
     },
     onError: (error) => {
-      toast.error(
-        `Failed to delete model: ${error instanceof Error ? error.message : "Unknown error"}`,
-      );
+      toast.error(`${t("model delete failed")}: ${error instanceof Error ? error.message : "NaN"}`);
     },
   });
 
@@ -55,12 +56,10 @@ export function OllamaModelsManagement() {
     mutationFn: (modelName: string) => ollama.pull({ model: modelName }),
     onSuccess: async () => {
       await refetch();
-      toast.success("Model pulled successfully");
+      toast.success(t("model pull success"));
     },
     onError: (error) => {
-      toast.error(
-        `Failed to pull model: ${error instanceof Error ? error.message : "Unknown error"}`,
-      );
+      toast.error(`${t("model pull failed")}: ${error instanceof Error ? error.message : "NaN"}`);
     },
   });
 
@@ -77,10 +76,10 @@ export function OllamaModelsManagement() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Size</TableHead>
-            <TableHead>Last Modified</TableHead>
-            <TableHead className="w-[50px]">Actions</TableHead>
+            <TableHead>{t("model name")}</TableHead>
+            <TableHead>{t("model size")}</TableHead>
+            <TableHead>{t("model last modified")}</TableHead>
+            <TableHead>{t("actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -101,12 +100,12 @@ export function OllamaModelsManagement() {
                       {isPulling ? (
                         <>
                           <Loader2Icon className="animate-spin" />
-                          Pulling...
+                          {t("pulling")}...
                         </>
                       ) : (
                         <>
                           <CloudDownloadIcon />
-                          Pull
+                          {t("pull")}
                         </>
                       )}
                     </DropdownMenuItem>
@@ -115,7 +114,7 @@ export function OllamaModelsManagement() {
                       onClick={() => deleteModel(model.name)}
                     >
                       <TrashIcon />
-                      Delete
+                      {t("delete")}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -125,7 +124,7 @@ export function OllamaModelsManagement() {
           {!models?.length && (
             <TableRow>
               <TableCell colSpan={4} className="text-center">
-                No models found
+                {t("no models found")}
               </TableCell>
             </TableRow>
           )}
