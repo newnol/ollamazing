@@ -24,7 +24,7 @@
     <a href="https://github.com/buiducnhat/ollamazing"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/buiducnhat/ollamazing">View Demo</a>
+    <a href="https://chromewebstore.google.com/detail/ollamazing/bfndpdpimcehljfgjdacbpapgbkecahi">Chrome Web store</a>
     &middot;
     <a href="https://github.com/buiducnhat/ollamazing/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
