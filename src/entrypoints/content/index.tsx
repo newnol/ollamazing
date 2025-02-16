@@ -2,8 +2,11 @@ import App from "./app";
 import "./styles.css";
 import "@/assets/globals.css";
 import "@/i18n";
+import { setUpRelativeDayjs } from "@/lib/utils";
 import { CONTENT_NAME } from "@/shared/consts";
 import ReactDOM from "react-dom/client";
+
+setUpRelativeDayjs();
 
 export default defineContentScript({
   matches: ["<all_urls>"],

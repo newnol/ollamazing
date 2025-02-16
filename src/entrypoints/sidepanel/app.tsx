@@ -9,12 +9,8 @@ import { useGetLocalModels } from "@/hooks/use-get-local-models";
 import { useInitState } from "@/hooks/use-init-state";
 import { openOptionsPage } from "@/lib/utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
-dayjs.extend(relativeTime);
 
 function AppContent() {
   useInitState();

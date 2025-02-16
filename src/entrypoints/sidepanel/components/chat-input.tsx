@@ -66,7 +66,7 @@ export function ChatInput({ onSend, onAbort, isGenerating }: ChatInputProps) {
           onKeyDown={handleKeyDown}
           onFocus={() => setIsFocusing(true)}
           onBlur={() => setIsFocusing(false)}
-          placeholder={t("ask something")}
+          placeholder={`${t("ask something")}...`}
         />
 
         <div className="flex items-center justify-between gap-2 px-3 pb-2">

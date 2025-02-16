@@ -15,13 +15,9 @@ import { Toaster } from "@/components/ui/sonner";
 import { useInitState } from "@/hooks/use-init-state";
 import "@/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import { SettingsIcon, LayoutDashboardIcon } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
-dayjs.extend(relativeTime);
 
 function AppContent() {
   useInitState();
@@ -50,7 +46,7 @@ function AppContent() {
   const [activeItem, setActiveItem] = React.useState<string>(menuItems[0].value);
 
   return (
-    <SidebarProvider className="h-[500px] w-4xl items-start">
+    <SidebarProvider className="h-[500px] w-3xl items-start">
       <Sidebar collapsible="none" className="max-w-48">
         <SidebarContent>
           <SidebarGroup>

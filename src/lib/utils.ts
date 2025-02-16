@@ -1,5 +1,7 @@
 import { CONTENT_NAME } from "@/shared/consts";
 import { type ClassValue, clsx } from "clsx";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -35,4 +37,8 @@ export function formatBytes(bytes: number): string {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+}
+
+export function setUpRelativeDayjs() {
+  dayjs.extend(relativeTime);
 }

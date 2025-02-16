@@ -6,15 +6,10 @@ import { useModelTranslate } from "./hooks/use-model-translate";
 import { useTextSelection } from "./hooks/use-text-selection";
 import "@/assets/globals.css";
 import { useInitState } from "@/hooks/use-init-state";
-import { ollamaState } from "@/lib/states/ollama.state";
 import { ContentHandledData } from "@/shared/types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import { useMemo, useState } from "react";
-import { useSnapshot } from "valtio";
-
-dayjs.extend(relativeTime);
+import { Loader2Icon } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 interface AppProps {
   container: HTMLElement;
@@ -23,13 +18,9 @@ interface AppProps {
 function AppContent() {
   useInitState();
 
-  const { translationModel } = useSnapshot(ollamaState);
-
   const [result, setResult] = useState<ContentHandledData | null>(null);
 
-  const { selectedText, isVisible } = useTextSelection({
-    onClose: () => setResult(null),
-  });
+  const { selectedText, isVisible } = useTextSelection();
 
   const { handleTranslate, isPending: isTranslating } = useModelTranslate({
     onSuccess: (data) => {
@@ -45,22 +36,29 @@ function AppContent() {
 
   const isLoading = useMemo(() => isTranslating || isSummarizing, [isTranslating, isSummarizing]);
 
-  if (!isVisible || !selectedText || !translationModel) {
+  useEffect(() => {
+    if (!isVisible) {
+      setResult(null);
+    }
+  }, [isVisible]);
+
+  if (!isVisible) {
     return null;
   }
-
+  if (isLoading) {
+    return (
+      <div className="bg-background flex items-center gap-1 rounded-lg border p-1 shadow-lg">
+        <Loader2Icon className="size-4 animate-spin" />
+      </div>
+    );
+  }
   return (
-    <div>
+    <div className="flex flex-col space-y-1">
       <SelectionMenu
-        isLoading={isLoading}
         onTranslate={() => handleTranslate(selectedText)}
         onSummarize={() => handleSummarize(selectedText)}
       />
-      {result && (
-        <div className="mt-2">
-          <HandledContentPopup data={result} onClose={() => setResult(null)} />
-        </div>
-      )}
+      {result && <HandledContentPopup data={result} onClose={() => setResult(null)} />}
     </div>
   );
 }
