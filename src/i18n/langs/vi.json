@@ -30,5 +30,11 @@
   "model pull success": "Tải mô hình thành công",
   "model pull failed": "Tải mô hình thất bại",
   "copied to clipboard": "Sao chép vào clipboard",
-  "preferences updated": "Câp nhật cài đặt thành công"
+  "preferences updated": "Câp nhật cài đặt thành công",
+  "set as translation model": "Chọn làm model dịch",
+  "model set as translation model success": "Chọn làm model dịch thành công",
+  "set as summary model": "Chọn làm model tóm tắt",
+  "model set as summary model success": "Chọn làm model tóm tắt thành công",
+  "translation": "Dịch",
+  "summary": "Tóm tắt"
 }

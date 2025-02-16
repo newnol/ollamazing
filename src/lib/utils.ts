@@ -1,3 +1,4 @@
+import { CONTENT_NAME } from "@/shared/consts";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -16,11 +17,14 @@ export function openOptionsPage() {
 export function updateTheme(theme?: "dark" | "light" | "system") {
   if (!document) return;
 
+  const content = document.querySelector(CONTENT_NAME);
+  const container = content?.shadowRoot?.children?.[0] ?? document.documentElement;
+
   const isDark =
     theme === "dark" ||
     ((theme === "system" || !theme) && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-  document.documentElement.classList.toggle("dark", isDark);
+  container.classList.toggle("dark", isDark);
 }
 
 export function formatBytes(bytes: number): string {

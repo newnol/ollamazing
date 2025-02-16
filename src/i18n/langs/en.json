@@ -30,5 +30,11 @@
   "model pull success": "Model pulled successfully",
   "model pull failed": "Model pull failed",
   "copied to clipboard": "Copied to clipboard",
-  "preferences updated": "Preferences updated"
+  "preferences updated": "Preferences updated",
+  "set as translation model": "Set as translation model",
+  "model set as translation model success": "Model set as translation model successfully",
+  "set as summary model": "Set as summary model",
+  "model set as summary model success": "Model set as summary model successfully",
+  "translation": "Translation",
+  "summary": "Summary"
 }

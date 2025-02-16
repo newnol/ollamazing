@@ -11,7 +11,7 @@ import { useCallback, useRef, useState } from "react";
 import { useSnapshot } from "valtio";
 
 export function ChatInterface() {
-  const { chatHistory, selectedModel } = useSnapshot(ollamaState);
+  const { chatHistory, chatModel } = useSnapshot(ollamaState);
 
   const ollama = useOllama();
 
@@ -45,7 +45,7 @@ export function ChatInterface() {
         role: "user",
         content: messageContent,
         timestamp: new Date(),
-        model: selectedModel,
+        model: chatModel,
         images,
       };
       const newMessages = [...chatMessages, userMessage];
@@ -100,10 +100,10 @@ export function ChatInterface() {
 
   const handleSend = useCallback(
     (messageContent: string, images?: string[]) => {
-      if (!selectedModel || !messageContent.trim()) return;
-      mutateSendMessage({ messageContent, model: selectedModel, images });
+      if (!chatModel || !messageContent.trim()) return;
+      mutateSendMessage({ messageContent, model: chatModel, images });
     },
-    [selectedModel, mutateSendMessage],
+    [chatModel, mutateSendMessage],
   );
 
   const handleAbort = useCallback(() => {
@@ -114,8 +114,8 @@ export function ChatInterface() {
     <div className="relative flex size-full flex-col overflow-y-hidden">
       {chatMessages.length === 0 ? (
         <div className="mt-4 flex h-full flex-col items-center justify-center">
-          <AssistantAvatar model={selectedModel} className="size-24" />
-          <p className="mb-4 font-mono text-xl font-semibold">{selectedModel}</p>
+          <AssistantAvatar model={chatModel} className="size-24" />
+          <p className="mb-4 font-mono text-xl font-semibold">{chatModel}</p>
         </div>
       ) : (
         <div className="flex-grow overflow-y-hidden">
@@ -133,7 +133,7 @@ export function ChatInterface() {
                   role: "assistant",
                   content: curResponseMessage.join(""),
                   timestamp: new Date(),
-                  model: selectedModel,
+                  model: chatModel,
                 }}
                 className="p-3"
               />

@@ -7,8 +7,11 @@ let isUpdating = false;
 
 type OllamaState = {
   host: string;
-  selectedModel: string | null;
   chatHistory: ChatMessage[];
+  chatModel: string | null;
+  languageToTranslate: string | null;
+  translationModel: string | null;
+  summaryModel: string | null;
 };
 
 type StorageData = OllamaState & {
@@ -17,8 +20,11 @@ type StorageData = OllamaState & {
 
 const fallbackState: OllamaState = {
   host: DEFAULT_OLLAMA_HOST,
-  selectedModel: null,
   chatHistory: [],
+  chatModel: null,
+  languageToTranslate: null,
+  translationModel: null,
+  summaryModel: null,
 };
 
 export const ollamaState = proxy<OllamaState>(fallbackState);
@@ -26,35 +32,44 @@ export const ollamaState = proxy<OllamaState>(fallbackState);
 export const syncFromStorage = async (data?: StorageData) => {
   if (isUpdating) return;
   isUpdating = true;
+
   if (!data) {
     data = (await storage.getItem<StorageData>(storageKey)) ?? undefined;
   }
 
   ollamaState.host = data?.host ?? fallbackState.host;
-  ollamaState.selectedModel = data?.selectedModel ?? fallbackState.selectedModel;
   ollamaState.chatHistory =
     data?.chatHistory?.map((msg: any) => ({
       ...msg,
       images: msg.images?.slice(),
       timestamp: new Date(msg.timestamp),
     })) ?? fallbackState.chatHistory;
+  ollamaState.chatModel = data?.chatModel ?? fallbackState.chatModel;
+  ollamaState.languageToTranslate = data?.languageToTranslate ?? fallbackState.languageToTranslate;
+  ollamaState.translationModel = data?.translationModel ?? fallbackState.translationModel;
+  ollamaState.summaryModel = data?.summaryModel ?? fallbackState.summaryModel;
+
   isUpdating = false;
 };
 
 const syncToStorage = async () => {
   if (isUpdating) return;
   isUpdating = true;
+
   const storageItem = {
     host: ollamaState.host,
-    selectedModel: ollamaState.selectedModel,
     chatHistory: ollamaState.chatHistory.map((msg) => ({
       ...msg,
       images: msg.images?.slice(),
       timestamp: msg.timestamp.getTime(),
     })),
+    chatModel: ollamaState.chatModel,
+    languageToTranslate: ollamaState.languageToTranslate,
+    translationModel: ollamaState.translationModel,
+    summaryModel: ollamaState.summaryModel,
   };
-
   await storage.setItem(storageKey, storageItem);
+
   isUpdating = false;
 };
 

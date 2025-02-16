@@ -1,18 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ollamaState } from "@/lib/states/ollama.state";
+import { useOllama } from "@/hooks/use-ollama";
 import { useMutation } from "@tanstack/react-query";
 import { DownloadCloud, Loader2Icon } from "lucide-react";
-import { Ollama } from "ollama/browser";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useSnapshot } from "valtio";
 
 export function PullModelInput() {
-  const { host } = useSnapshot(ollamaState);
   const { t } = useTranslation();
 
-  const ollama = new Ollama({ host });
+  const ollama = useOllama();
 
   const [model, setModel] = useState("");
 

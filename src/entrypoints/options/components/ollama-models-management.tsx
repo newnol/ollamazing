@@ -17,15 +17,19 @@ import { ollamaState } from "@/lib/states/ollama.state";
 import { formatBytes } from "@/lib/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { Loader2Icon, MoreVerticalIcon, TrashIcon, CloudDownloadIcon } from "lucide-react";
-import { Ollama } from "ollama/browser";
+import {
+  Loader2Icon,
+  MoreVerticalIcon,
+  TrashIcon,
+  CloudDownloadIcon,
+  LanguagesIcon,
+  FileTextIcon,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useSnapshot } from "valtio";
 
 export function OllamaModelsManagement() {
-  const { host } = useSnapshot(ollamaState);
-  const ollama = new Ollama({ host });
+  const ollama = useOllama();
 
   const { t } = useTranslation();
 
@@ -63,6 +67,22 @@ export function OllamaModelsManagement() {
     },
   });
 
+  const handleSetAsTranslationModel = useCallback(
+    (modelName: string) => {
+      ollamaState.translationModel = modelName;
+      toast.success(t("model set as translation model success"));
+    },
+    [t],
+  );
+
+  const handleSetAsSummaryModel = useCallback(
+    (modelName: string) => {
+      ollamaState.summaryModel = modelName;
+      toast.success(t("model set as summary model success"));
+    },
+    [t],
+  );
+
   if (isLoadingModels || isDeleting) {
     return (
       <div className="flex items-center justify-center p-4">
@@ -96,6 +116,14 @@ export function OllamaModelsManagement() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => handleSetAsTranslationModel(model.name)}>
+                      <LanguagesIcon />
+                      {t("set as translation model")}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleSetAsSummaryModel(model.name)}>
+                      <FileTextIcon />
+                      {t("set as summary model")}
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => pullModel(model.name)} disabled={isPulling}>
                       {isPulling ? (
                         <>
@@ -110,7 +138,7 @@ export function OllamaModelsManagement() {
                       )}
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      className="text-destructive hover:bg-destructive! hover:text-destructive-foreground"
+                      className="text-destructive hover:bg-destructive! hover:text-destructive-foreground!"
                       onClick={() => deleteModel(model.name)}
                     >
                       <TrashIcon />
