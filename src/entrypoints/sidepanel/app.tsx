@@ -3,6 +3,7 @@ import { Header } from "./components/header";
 import { LoadingScreen } from "./components/loading-screen";
 import "@/assets/globals.css";
 import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/sonner";
 import { useCheckOllamaServer } from "@/hooks/use-check-ollama-server";
 import { useGetLocalModels } from "@/hooks/use-get-local-models";
 import { useInitState } from "@/hooks/use-init-state";
@@ -15,7 +16,7 @@ import { useTranslation } from "react-i18next";
 
 dayjs.extend(relativeTime);
 
-function App() {
+function AppContent() {
   useInitState();
 
   const { t } = useTranslation();
@@ -48,14 +49,14 @@ function App() {
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="bg-background flex h-screen flex-col">
       <Header models={localModelsQuery.data ?? []} />
       <ChatInterface />
     </div>
   );
 }
 
-export function WithQueryProvider({ children }: { children: React.ReactNode }) {
+export function App() {
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -67,7 +68,12 @@ export function WithQueryProvider({ children }: { children: React.ReactNode }) {
       }),
   );
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppContent />
+      <Toaster />
+    </QueryClientProvider>
+  );
 }
 
 export default App;

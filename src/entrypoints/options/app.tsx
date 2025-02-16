@@ -11,6 +11,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
 } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import { useInitState } from "@/hooks/use-init-state";
 import "@/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -22,8 +23,11 @@ import { useTranslation } from "react-i18next";
 
 dayjs.extend(relativeTime);
 
-function App() {
+function AppContent() {
+  useInitState();
+
   const { t } = useTranslation();
+
   const menuItems = React.useMemo(
     () => [
       {
@@ -44,8 +48,6 @@ function App() {
   );
 
   const [activeItem, setActiveItem] = React.useState<string>(menuItems[0].value);
-
-  useInitState();
 
   return (
     <SidebarProvider className="h-[500px] w-4xl items-start">
@@ -69,14 +71,14 @@ function App() {
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <main className="flex-1 p-3">
+      <main className="bg-background h-full flex-1 p-3">
         {menuItems.find((item) => item.value === activeItem)?.content}
       </main>
     </SidebarProvider>
   );
 }
 
-export function WithQueryProvider({ children }: { children: React.ReactNode }) {
+export function App() {
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -88,7 +90,12 @@ export function WithQueryProvider({ children }: { children: React.ReactNode }) {
       }),
   );
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppContent />
+      <Toaster />
+    </QueryClientProvider>
+  );
 }
 
 export default App;
