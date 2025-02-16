@@ -24,7 +24,7 @@
     <a href="https://github.com/buiducnhat/ollamazing"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/buiducnhat/ollamazing">View Demo</a>
+    <a href="https://chromewebstore.google.com/detail/ollamazing/bfndpdpimcehljfgjdacbpapgbkecahi">Chrome Web store</a>
     &middot;
     <a href="https://github.com/buiducnhat/ollamazing/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
@@ -84,7 +84,9 @@ This extension is built using `WXT` and `React`, so ensure to install `Node.Js` 
 ### Prerequisites
 
 - **Package manager**: We can use any package managers like `npm`, `yarn`, `pnpm`, `bun`. This project is currently installed by `npm`, that the field `package-lock.json` exists.
-- **Ollama**: This extension uses `Ollama`, so you have to have a `Ollama` server from anywhere, installing on local for example. For more details, read [Ollama](https://github.com/buiducnhat/ollama).
+- **Ollama**: This extension uses `Ollama`, so you have to have an `Ollama` server from anywhere, installing on local for example. For more details, read [Ollama](https://github.com/buiducnhat/ollama).
+  > **Important**: If you run Ollama on local machine, ensure to setup the `OLLAMA_ORIGINS` to allow the extension can connect to the server
+  > For more detail, read [Ollama FAQ](https://github.com/ollama/ollama/blob/main/docs/faq.md#how-do-i-configure-ollama-server), set the `OLLAMA_ORIGINS` to `*` or `chrome-extension://*` or the domain you want to allow.
 
 ### Installation
 
@@ -176,6 +178,10 @@ Bùi Đức Nhật - nhaths4701@gmail.com
 Project Link: [https://github.com/buiducnhat/ollamazing](https://github.com/buiducnhat/ollamazing)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=buiducnhat/ollamazing&type=Date)](https://star-history.com/#buiducnhat/ollamazing&Date)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
