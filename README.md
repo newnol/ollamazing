@@ -179,23 +179,24 @@ Bùi Đức Nhật - nhaths4701@gmail.com
 
 Project Link: [https://github.com/buiducnhat/ollamazing](https://github.com/buiducnhat/ollamazing)
 
+### Support the project
+
+<div style="display: flex; justify-content: center; gap: 10px;">
+  <a href="https://www.buymeacoffee.com/buiducnhat" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
+  </a>
+  <a href="https://ko-fi.com/buiducnhat" target="_blank">
+    <img src="https://cdn.ko-fi.com/cdn/kofi1.png?v=3" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
+  </a>
+</div>
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=buiducnhat/ollamazing&type=Date)](https://star-history.com/#buiducnhat/ollamazing&Date)
 
-## Support the project
 
-<div style="display: flex; justify-content: center; gap: 10px;">
-  <a href="https://www.buymeacoffee.com/buiducnhat" target="_blank">
-    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
-  </a>
-
-  <a href="https://ko-fi.com/buiducnhat" target="_blank">
-    <img src="https://cdn.ko-fi.com/cdn/kofi1.png?v=3" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
-  </a>
-</div>
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
