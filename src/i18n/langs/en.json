@@ -36,5 +36,15 @@
   "set as summary model": "Set as summary model",
   "model set as summary model success": "Model set as summary model successfully",
   "translation": "Translation",
-  "summary": "Summary"
+  "summary": "Summary",
+  "model selection": "Model selection",
+  "select model success": "Model selected successfully",
+  "chat model": "Chat model",
+  "translation model": "Translation model",
+  "summary model": "Summary model",
+  "select a model": "Select a model",
+  "install or select a chat model": "Install or select a chat model",
+  "no model selected": "No model selected",
+  "display language": "Display language",
+  "translate to language": "Translate to language"
 }

@@ -36,5 +36,15 @@
   "set as summary model": "Chọn làm model tóm tắt",
   "model set as summary model success": "Chọn làm model tóm tắt thành công",
   "translation": "Dịch",
-  "summary": "Tóm tắt"
+  "summary": "Tóm tắt",
+  "model selection": "Chọn model",
+  "select model success": "Chọn model thành công",
+  "chat model": "Model Chat",
+  "translation model": "Model dịch",
+  "summary model": "Model tóm tắt",
+  "select a model": "Chọn model",
+  "install or select a chat model": "Cài hoặc chọn model chat",
+  "no model selected": "Không có model được chọn",
+  "display language": "Ngôn ngữ hiển thị",
+  "translate to language": "Dịch sang ngôn ngữ"
 }

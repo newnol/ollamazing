@@ -7,6 +7,7 @@ let isUpdating = false;
 type PreferencesState = {
   theme: "light" | "dark" | "system";
   lang: "en" | "vi";
+  translateToLanguage: string;
 };
 
 type StorageData = PreferencesState;
@@ -14,6 +15,7 @@ type StorageData = PreferencesState;
 const fallbackState: PreferencesState = {
   theme: "system",
   lang: "en",
+  translateToLanguage: "English",
 };
 
 export const preferencesState = proxy<PreferencesState>(fallbackState);
@@ -34,8 +36,10 @@ export const syncFromStorage = async (data?: StorageData) => {
 const syncToStorage = async () => {
   if (isUpdating) return;
   isUpdating = true;
+
   updateTheme(preferencesState.theme);
   await storage.setItem(storageKey, preferencesState);
+
   isUpdating = false;
 };
 

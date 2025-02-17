@@ -1,29 +1,29 @@
 import { ChatInterface } from "./components/chat-interface";
 import { Header } from "./components/header";
-import { LoadingScreen } from "./components/loading-screen";
 import "@/assets/globals.css";
+import { LoadingScreen } from "@/components/loading-screen";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
-import { useCheckOllamaServer } from "@/hooks/use-check-ollama-server";
-import { useGetLocalModels } from "@/hooks/use-get-local-models";
+import { useInitOllama } from "@/hooks/use-init-ollama";
 import { useInitState } from "@/hooks/use-init-state";
+import { preferencesState } from "@/lib/states/preferences.state";
 import { openOptionsPage } from "@/lib/utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSnapshot } from "valtio";
 
 function AppContent() {
   useInitState();
-
+  const { theme } = useSnapshot(preferencesState);
   const { t } = useTranslation();
 
-  const checkOllamaServerQuery = useCheckOllamaServer();
-  const localModelsQuery = useGetLocalModels({ enabled: checkOllamaServerQuery.isSuccess });
+  const initOllamaQuery = useInitOllama();
 
-  if (localModelsQuery.isLoading || checkOllamaServerQuery.isLoading) {
-    return <LoadingScreen />;
+  if (initOllamaQuery.isLoading) {
+    return <LoadingScreen className="h-screen w-screen" />;
   }
-  if (checkOllamaServerQuery.error) {
+  if (initOllamaQuery.error) {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-4">
         <div className="text-lg">{t("check ollama server")}</div>
@@ -33,27 +33,19 @@ function AppContent() {
       </div>
     );
   }
-  if (localModelsQuery.data?.length === 0) {
-    return (
-      <div className="flex h-screen flex-col items-center justify-center gap-4">
-        <div className="text-lg">{t("no models found")}</div>
-        <Button className="cursor-pointer" onClick={openOptionsPage}>
-          {t("open settings")}
-        </Button>
-      </div>
-    );
-  }
-
   return (
-    <div className="bg-background flex h-screen flex-col">
-      <Header models={localModelsQuery.data ?? []} />
-      <ChatInterface />
-    </div>
+    <>
+      <div className="bg-background flex h-screen flex-col">
+        <Header models={initOllamaQuery.data?.models ?? []} />
+        <ChatInterface />
+      </div>
+      <Toaster theme={theme} />
+    </>
   );
 }
 
 export function App() {
-  const [queryClient] = React.useState(
+  const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
@@ -67,7 +59,6 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppContent />
-      <Toaster />
     </QueryClientProvider>
   );
 }

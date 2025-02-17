@@ -9,7 +9,6 @@ type OllamaState = {
   host: string;
   chatHistory: ChatMessage[];
   chatModel: string | null;
-  languageToTranslate: string | null;
   translationModel: string | null;
   summaryModel: string | null;
 };
@@ -22,7 +21,6 @@ const fallbackState: OllamaState = {
   host: DEFAULT_OLLAMA_HOST,
   chatHistory: [],
   chatModel: null,
-  languageToTranslate: null,
   translationModel: null,
   summaryModel: null,
 };
@@ -45,7 +43,6 @@ export const syncFromStorage = async (data?: StorageData) => {
       timestamp: new Date(msg.timestamp),
     })) ?? fallbackState.chatHistory;
   ollamaState.chatModel = data?.chatModel ?? fallbackState.chatModel;
-  ollamaState.languageToTranslate = data?.languageToTranslate ?? fallbackState.languageToTranslate;
   ollamaState.translationModel = data?.translationModel ?? fallbackState.translationModel;
   ollamaState.summaryModel = data?.summaryModel ?? fallbackState.summaryModel;
 
@@ -64,7 +61,6 @@ const syncToStorage = async () => {
       timestamp: msg.timestamp.getTime(),
     })),
     chatModel: ollamaState.chatModel,
-    languageToTranslate: ollamaState.languageToTranslate,
     translationModel: ollamaState.translationModel,
     summaryModel: ollamaState.summaryModel,
   };

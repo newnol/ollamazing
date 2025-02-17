@@ -23,8 +23,9 @@ interface HeaderProps {
 }
 
 export const Header = ({ models }: HeaderProps) => {
-  const { t } = useTranslation();
   const { chatModel } = useSnapshot(ollamaState);
+
+  const { t } = useTranslation();
 
   const handleDeleteChatHistory = useCallback(() => {
     ollamaState.chatHistory = [];
@@ -43,7 +44,9 @@ export const Header = ({ models }: HeaderProps) => {
         />
         <div>
           <h1 className="font-semibold">{EXTENSION_NAME}</h1>
-          <p className="text-muted-foreground text-xs">{chatModel}</p>
+          <p className="text-muted-foreground text-xs">
+            {chatModel ?? t("no model selected")}
+          </p>
         </div>
       </div>
 

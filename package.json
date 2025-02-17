@@ -1,9 +1,31 @@
 {
   "name": "ollamazing",
-  "description": "Web extension for Ollama",
-  "private": true,
-  "version": "0.0.3",
+  "description": "Web extension to use local AI models",
+  "version": "0.1.0",
   "type": "module",
+  "homepage": "https://github.com/buiducnhat/ollamazing",
+  "author": "Bui Duc Nhat <buiducnhat@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/buiducnhat/ollamazing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/buiducnhat/ollamazing/issues?q=label%3Abug%20"
+  },
+  "keywords": [
+    "wxt",
+    "web extension",
+    "chrome extension",
+    "local",
+    "ai models",
+    "ollama",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "shadcn",
+    "valtio"
+  ],
   "scripts": {
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",

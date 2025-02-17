@@ -13,18 +13,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ollamaState } from "@/lib/states/ollama.state";
 import { formatBytes } from "@/lib/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import {
-  Loader2Icon,
-  MoreVerticalIcon,
-  TrashIcon,
-  CloudDownloadIcon,
-  LanguagesIcon,
-  FileTextIcon,
-} from "lucide-react";
+import { Loader2Icon, MoreVerticalIcon, TrashIcon, CloudDownloadIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
@@ -67,22 +59,6 @@ export function OllamaModelsManagement() {
     },
   });
 
-  const handleSetAsTranslationModel = useCallback(
-    (modelName: string) => {
-      ollamaState.translationModel = modelName;
-      toast.success(t("model set as translation model success"));
-    },
-    [t],
-  );
-
-  const handleSetAsSummaryModel = useCallback(
-    (modelName: string) => {
-      ollamaState.summaryModel = modelName;
-      toast.success(t("model set as summary model success"));
-    },
-    [t],
-  );
-
   if (isLoadingModels || isDeleting) {
     return (
       <div className="flex items-center justify-center p-4">
@@ -116,14 +92,6 @@ export function OllamaModelsManagement() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => handleSetAsTranslationModel(model.name)}>
-                      <LanguagesIcon />
-                      {t("set as translation model")}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleSetAsSummaryModel(model.name)}>
-                      <FileTextIcon />
-                      {t("set as summary model")}
-                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => pullModel(model.name)} disabled={isPulling}>
                       {isPulling ? (
                         <>

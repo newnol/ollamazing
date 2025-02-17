@@ -1,6 +1,8 @@
+import { ModelSelectionForm } from "./components/model-selection-form";
 import { OllamaContent } from "./components/ollama-content";
 import { PreferencesForm } from "./components/preferences-form";
 import "@/assets/globals.css";
+import { LoadingScreen } from "@/components/loading-screen";
 import {
   Sidebar,
   SidebarContent,
@@ -12,19 +14,26 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import { useInitOllama } from "@/hooks/use-init-ollama";
 import { useInitState } from "@/hooks/use-init-state";
 import "@/i18n";
+import { preferencesState } from "@/lib/states/preferences.state";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SettingsIcon, LayoutDashboardIcon } from "lucide-react";
-import React from "react";
+import { SettingsIcon, LayoutDashboardIcon, WandIcon } from "lucide-react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useSnapshot } from "valtio";
 
 function AppContent() {
   useInitState();
 
+  const { theme } = useSnapshot(preferencesState);
+
   const { t } = useTranslation();
 
-  const menuItems = React.useMemo(
+  const initOllamaQuery = useInitOllama();
+
+  const menuItems = useMemo(
     () => [
       {
         value: "ollama",
@@ -32,7 +41,12 @@ function AppContent() {
         label: "Ollama",
         content: <OllamaContent />,
       },
-
+      {
+        value: "models",
+        icon: WandIcon,
+        label: t("model selection"),
+        content: <ModelSelectionForm models={initOllamaQuery.data?.models ?? []} />,
+      },
       {
         value: "preferences",
         icon: SettingsIcon,
@@ -40,10 +54,14 @@ function AppContent() {
         content: <PreferencesForm />,
       },
     ],
-    [t],
+    [t, initOllamaQuery.data?.models],
   );
 
-  const [activeItem, setActiveItem] = React.useState<string>(menuItems[0].value);
+  const [activeItem, setActiveItem] = useState<string>(menuItems[0].value);
+
+  if (initOllamaQuery.isLoading) {
+    return <LoadingScreen className="h-[500px] w-3xl" />;
+  }
 
   return (
     <SidebarProvider className="h-[500px] w-3xl items-start">
@@ -70,12 +88,13 @@ function AppContent() {
       <main className="bg-background h-full flex-1 p-3">
         {menuItems.find((item) => item.value === activeItem)?.content}
       </main>
+      <Toaster theme={theme} />
     </SidebarProvider>
   );
 }
 
 export function App() {
-  const [queryClient] = React.useState(
+  const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
@@ -89,7 +108,6 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppContent />
-      <Toaster />
     </QueryClientProvider>
   );
 }

@@ -5,6 +5,7 @@ import { useModelSummarize } from "./hooks/use-model-summarize";
 import { useModelTranslate } from "./hooks/use-model-translate";
 import { useTextSelection } from "./hooks/use-text-selection";
 import "@/assets/globals.css";
+import { useInitOllama } from "@/hooks/use-init-ollama";
 import { useInitState } from "@/hooks/use-init-state";
 import { ContentHandledData } from "@/shared/types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -17,6 +18,8 @@ interface AppProps {
 
 function AppContent() {
   useInitState();
+
+  const initOllamaQuery = useInitOllama();
 
   const [result, setResult] = useState<ContentHandledData | null>(null);
 
@@ -42,6 +45,10 @@ function AppContent() {
     }
   }, [isVisible]);
 
+  if (initOllamaQuery.error) {
+    console.error("Ollama initialization failed:", initOllamaQuery.error);
+    return null;
+  }
   if (!isVisible) {
     return null;
   }

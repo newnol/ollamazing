@@ -2,18 +2,23 @@ import { AssistantMessage } from "./assistant-message";
 import { ChatInput } from "./chat-input";
 import { UserMessage } from "./user-message";
 import { AssistantAvatar } from "@/components/assistant-avatar";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useOllama } from "@/hooks/use-ollama";
 import { ollamaState } from "@/lib/states/ollama.state";
+import { openOptionsPage } from "@/lib/utils";
 import { ChatMessage } from "@/shared/types";
 import { useMutation } from "@tanstack/react-query";
 import { useCallback, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
 
 export function ChatInterface() {
   const { chatHistory, chatModel } = useSnapshot(ollamaState);
 
   const ollama = useOllama();
+
+  const { t } = useTranslation();
 
   const chatMessages = useMemo(() => chatHistory, [chatHistory]);
 
@@ -110,11 +115,19 @@ export function ChatInterface() {
     chatResponse?.abort();
   }, [chatResponse]);
 
+  if (!chatModel) {
+    return (
+      <div className="flex h-full w-full flex-col items-center justify-center space-y-4 text-xl font-semibold">
+        <p>{t("install or select a chat model")}</p>
+        <Button onClick={() => openOptionsPage()}>{t("open settings")}</Button>
+      </div>
+    );
+  }
   return (
     <div className="relative flex size-full flex-col overflow-y-hidden">
       {chatMessages.length === 0 ? (
         <div className="mt-4 flex h-full flex-col items-center justify-center">
-          <AssistantAvatar model={chatModel} className="size-24" />
+          <AssistantAvatar model={chatModel} className="size-24 rounded-4xl p-1" />
           <p className="mb-4 font-mono text-xl font-semibold">{chatModel}</p>
         </div>
       ) : (

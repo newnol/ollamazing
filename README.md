@@ -19,7 +19,7 @@
 <h3 align="center">Ollamazing</h3>
 
   <p align="center">
-    A Web extension to use Ollama
+    A Web extension to use local AI models
     <br />
     <a href="https://github.com/buiducnhat/ollamazing"><strong>Explore the docs »</strong></a>
     <br />
@@ -130,9 +130,10 @@ then, a new browser window will open with the extension installed.
   - [x] Light/Dark theme.
   - [x] Multiple languages.
 - [x] Manage model, use more Ollama APIs.
-- [ ] Content script to be injected into the pages.
-  - [ ] Add utility when user select text in the page.
-  - [ ] Add context menu to translate text, or define a word.
+- [x] Content script to be injected into the pages.
+  - [x] Add utility when user select text in the page.
+  - [x] Add context menu to translate text
+  - [x] Add context menu to summarize paragraph
 
 See the [open issues](https://github.com/buiducnhat/ollamazing/issues) for a full list of proposed features (and known issues).
 

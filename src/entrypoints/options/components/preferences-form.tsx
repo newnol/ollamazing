@@ -1,3 +1,4 @@
+import languages from "@/assets/languages.json";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,10 +27,12 @@ import * as z from "zod";
 const formSchema = z.object({
   theme: z.enum(["light", "dark", "system"]).default("system"),
   lang: z.enum(["en", "vi"]).default("en"),
+  translateToLanguage: z.string().default("English"),
 });
 
 export function PreferencesForm() {
   const { t, i18n } = useTranslation();
+
   const snap = useSnapshot(preferencesState);
 
   const themeOptions = useMemo(
@@ -49,17 +52,29 @@ export function PreferencesForm() {
     [],
   );
 
+  const translateToLanguageOptions = useMemo(
+    () =>
+      languages.map((language) => ({
+        label: `${language.name}/(${language.native})`,
+        value: language.name,
+      })),
+    [],
+  );
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       theme: snap.theme,
       lang: snap.lang,
+      translateToLanguage: snap.translateToLanguage,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     preferencesState.theme = values.theme;
     preferencesState.lang = values.lang;
+    preferencesState.translateToLanguage = values.translateToLanguage;
+
     await i18n.changeLanguage(values.lang);
     toast.success(t("preferences updated"));
   };
@@ -98,7 +113,7 @@ export function PreferencesForm() {
           name="lang"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("preferences")}</FormLabel>
+              <FormLabel>{t("display language")}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
@@ -107,6 +122,31 @@ export function PreferencesForm() {
                 </FormControl>
                 <SelectContent>
                   {langOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="translateToLanguage"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("translate to language")}</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a language" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {translateToLanguageOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>
