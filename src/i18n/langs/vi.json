@@ -46,5 +46,7 @@
   "install or select a chat model": "Cài hoặc chọn model chat",
   "no model selected": "Không có model được chọn",
   "display language": "Ngôn ngữ hiển thị",
-  "translate to language": "Dịch sang ngôn ngữ"
+  "translate to language": "Dịch sang ngôn ngữ",
+  "search language": "Tìm ngôn ngữ",
+  "no language found": "Không tìm thấy ngôn ngữ"
 }
