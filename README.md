@@ -130,10 +130,11 @@ then, a new browser window will open with the extension installed.
   - [x] Light/Dark theme.
   - [x] Multiple languages.
 - [x] Manage model, use more Ollama APIs.
-- [x] Content script to be injected into the pages.
-  - [x] Add utility when user select text in the page.
-  - [x] Add context menu to translate text
-  - [x] Add context menu to summarize paragraph
+- [x] Content script to be injected into the pages when selecting text.
+  - [x] Add utility to translate text.
+  - [x] Add utility to summarize paragraph.
+- [ ] Add context menu besides the text selection for web pages.
+- [ ] Add short key to open the extension.
 
 See the [open issues](https://github.com/buiducnhat/ollamazing/issues) for a full list of proposed features (and known issues).
 

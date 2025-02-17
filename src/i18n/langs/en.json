@@ -47,6 +47,9 @@
   "no model selected": "No model selected",
   "display language": "Display language",
   "translate to language": "Translate to language",
-  "search language": "Search language",
-  "no language found": "No language found"
+  "search": "Search",
+  "no language found": "No language found",
+  "select language": "Select language",
+  "unselect": "Unselect",
+  "unselect language": "Unselect language"
 }

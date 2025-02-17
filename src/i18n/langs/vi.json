@@ -47,6 +47,9 @@
   "no model selected": "Không có model được chọn",
   "display language": "Ngôn ngữ hiển thị",
   "translate to language": "Dịch sang ngôn ngữ",
-  "search language": "Tìm ngôn ngữ",
-  "no language found": "Không tìm thấy ngôn ngữ"
+  "no language found": "Không tìm thấy ngôn ngữ",
+  "select language": "Chọn ngôn ngữ",
+  "search": "Tìm kiếm",
+  "unselect": "Bỏ chọn",
+  "unselect language": "Bỏ chọn ngôn ngữ"
 }

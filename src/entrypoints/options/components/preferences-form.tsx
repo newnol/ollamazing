@@ -1,13 +1,6 @@
 import languages from "@/assets/languages.json";
+import { Combobox } from "@/components/combobox";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
 import {
   Form,
   FormControl,
@@ -16,7 +9,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -25,9 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { preferencesState } from "@/lib/states/preferences.state";
-import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckIcon, ChevronsUpDownIcon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
+import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -149,51 +140,14 @@ export function PreferencesForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>{t("translate to language")}</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn("justify-between", !field.value && "text-muted-foreground")}
-                    >
-                      {field.value
-                        ? translateToLanguageOptions.find(
-                            (language) => language.value === field.value,
-                          )?.label
-                        : "Select language"}
-                      <ChevronsUpDownIcon className="opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="h-[200px] w-[500px] p-0">
-                  <Command>
-                    <CommandInput placeholder={`${t("search language")}...`} className="h-9" />
-                    <CommandList>
-                      <CommandEmpty>{t("no language found")}</CommandEmpty>
-                      <CommandGroup>
-                        {translateToLanguageOptions.map((language) => (
-                          <CommandItem
-                            value={language.value}
-                            key={language.value}
-                            onSelect={() => {
-                              form.setValue("translateToLanguage", language.value);
-                            }}
-                          >
-                            {language.label}
-                            <CheckIcon
-                              className={cn(
-                                "ml-auto",
-                                language.value === field.value ? "opacity-100" : "opacity-0",
-                              )}
-                            />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+              <Combobox
+                selectItemMsg={t("select language")}
+                searchPlaceholder={`${t("search")}...`}
+                noResultsMsg={t("no language found")}
+                items={translateToLanguageOptions}
+                value={field.value}
+                onSelect={(value) => field.onChange(value)}
+              />
             </FormItem>
           )}
         />
