@@ -1,7 +1,7 @@
 {
   "name": "ollamazing",
   "description": "Web extension to use local AI models",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "homepage": "https://github.com/buiducnhat/ollamazing",
   "author": "Bui Duc Nhat <buiducnhat@gmail.com>",

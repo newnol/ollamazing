@@ -134,7 +134,8 @@ then, a new browser window will open with the extension installed.
   - [x] Add utility to translate text.
   - [x] Add utility to summarize paragraph.
 - [ ] Add context menu besides the text selection for web pages.
-- [ ] Add short key to open the extension.
+- [x] Add short key to open the extension.
+- [ ] Feature multiple chat, history chat.
 
 See the [open issues](https://github.com/buiducnhat/ollamazing/issues) for a full list of proposed features (and known issues).
 
