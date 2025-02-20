@@ -14,5 +14,14 @@ export default defineConfig({
     name: "Ollamazing",
     short_name: "Ollamazing",
     permissions: ["storage"],
+    commands: {
+      "toggle-sidepanel": {
+        suggested_key: {
+          default: "Ctrl+Shift+Period",
+          mac: "Command+Shift+Period",
+        },
+        description: "Toggle the side panel",
+      },
+    },
   },
 });

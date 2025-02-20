@@ -19,3 +19,5 @@ export interface ContentTranslationData {
 }
 
 export type ContentHandledData = ContentSummaryData | ContentTranslationData;
+
+export type Command = "toggle-sidepanel";
