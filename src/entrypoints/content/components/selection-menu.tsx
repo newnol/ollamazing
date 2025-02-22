@@ -8,7 +8,7 @@ interface SelectionMenuProps {
 
 export function SelectionMenu({ onTranslate, onSummarize }: SelectionMenuProps) {
   return (
-    <div className="bg-background flex w-fit items-center gap-1 rounded-xl border p-1 shadow-lg">
+    <div className="bg-background border-highlight z-front flex w-fit items-center gap-1 rounded-xl p-1">
       <Button variant="ghost" size="icon" className="size-8" onClick={onTranslate}>
         <LanguagesIcon className="size-4" />
       </Button>

@@ -1,5 +1,17 @@
+@import "@/assets/globals.css";
+
 @layer base {
   body {
     @apply bg-transparent;
+  }
+}
+
+@layer components {
+  .border-highlight {
+    @apply border-foreground border border-solid;
+  }
+
+  .z-front {
+    @apply z-[9999];
   }
 }

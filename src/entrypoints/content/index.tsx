@@ -1,6 +1,5 @@
 import App from "./app";
 import "./styles.css";
-import "@/assets/globals.css";
 import "@/i18n";
 import { setUpRelativeDayjs } from "@/lib/utils";
 import { CONTENT_NAME } from "@/shared/consts";

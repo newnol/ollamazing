@@ -4,7 +4,7 @@ import { SelectionMenu } from "./components/selection-menu";
 import { useModelSummarize } from "./hooks/use-model-summarize";
 import { useModelTranslate } from "./hooks/use-model-translate";
 import { useTextSelection } from "./hooks/use-text-selection";
-import "@/assets/globals.css";
+import "./styles.css";
 import { useInitOllama } from "@/hooks/use-init-ollama";
 import { useInitState } from "@/hooks/use-init-state";
 import { ContentHandledData } from "@/shared/types";
@@ -54,7 +54,7 @@ function AppContent() {
   }
   if (isLoading) {
     return (
-      <div className="bg-background flex items-center gap-1 rounded-lg border p-1 shadow-lg">
+      <div className="bg-background border-highlight z-front flex items-center gap-1 rounded-lg p-1 shadow-lg">
         <Loader2Icon className="size-4 animate-spin" />
       </div>
     );

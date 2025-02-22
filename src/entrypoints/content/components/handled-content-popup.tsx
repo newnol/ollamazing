@@ -40,13 +40,13 @@ export function HandledContentPopup({ data, onClose }: HandledContentPopupProps)
   }, [data]);
 
   return (
-    <div className="bg-background flex w-[300px] flex-col space-y-2 rounded-xl p-3 shadow-lg">
+    <div className="bg-background border-highlight z-front flex w-[300px] flex-col space-y-2 rounded-xl p-3">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-medium">{title}</h3>
         <div className="flex gap-1">
           <Button variant="ghost" size="icon" className="size-6" onClick={handleCopy}>
             {copied ? (
-              <CheckIcon className="size-4 text-green-500" />
+              <CheckIcon className="size-4 text-green-700 dark:text-green-400" />
             ) : (
               <CopyIcon className="size-4" />
             )}
